@@ -13,7 +13,7 @@ CREATE TABLE host (
   PRIMARY KEY (`Name`)
 );
 
-CREATE TABLE user_roup (
+CREATE TABLE user_group (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Description` text COLLATE utf8_bin,
   PRIMARY KEY (`Name`)
