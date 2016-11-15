@@ -11,15 +11,15 @@ class RolePull(object):
             serv: Address of source of Truth server (default: localhost)
     """
 
-    def __init__(self, serv="localhost"):
+    def __init__(self, server="localhost"):
         """
         Get input and set up connection to be used with contexts (with) later.
 
         Standard dunder/magic method; returns nothing special.
         No special input validation.
         """
-        self.serv = serv
-        self.connection = pymysql.connect(host=self.serv,
+        self.server = server
+        self.connection = pymysql.connect(host=self.server,
                                           db='_MysqlRoles')
 
     def create_tables(self):
@@ -243,3 +243,7 @@ class RolePull(object):
             ag_add_stmt = "insert into access values (%s, %s, %s, %s)"
             cursor.execute(ag_add_stmt, (name, usergroup, hostgroup,
                                          permission))
+
+    """
+    Interact with command line.
+    """

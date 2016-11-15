@@ -8,19 +8,32 @@ class RoleManage(object):
         the mysql user table match.
 
         Input:
-            host: Address of server to make match the source of truth
-            serv: Address of source of Truth server (default: localhost)
+            client: Address of server to make match the source of truth
+            server: Address of source of Truth server (default: localhost)
     """
 
-    def __init__(self, host, serv="localhost"):
+    def __init__(self, client, server="localhost"):
         """
         Get input and set up connections to be used with contexts (with) later.
 
         Standard dunder/magic method; returns nothing special.
         No special input validation.
         """
-        self.serv = serv
-        self.central_con = pymysql.connect(host=self.serv,
+        self.server = server
+        self.client = client
+        self.central_con = pymysql.connect(host=self.server,
                                           db='_MysqlRoles')
-        self.client_con = pymysql.connect(host=self.serv,
+        self.client_con = pymysql.connect(host=self.client,
                                           db='mysql')
+
+    """
+    Run a check the host for consistency, reporting differences.
+    """
+
+    """
+    Make the user inserts to add to the client, and add them.
+    """
+
+    """
+    Interact with command line.
+    """
