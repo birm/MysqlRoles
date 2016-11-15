@@ -14,25 +14,25 @@ insert into host values ("prod", "prod", "main prod host");
 insert into host values ("ops", "ops", "main ops host");
 
 -- user groups
-insert into UserGroup (Name) values ("Audit");
-insert into UserGroup (Name) values ("Development");
-insert into UserGroup (Name) values ("Testing");
-insert into UserGroup (Name) values ("Reporting");
-insert into UserGroup (Name) values ("Admin");
+insert into user_group (Name) values ("Audit");
+insert into user_group (Name) values ("Development");
+insert into user_group (Name) values ("Testing");
+insert into user_group (Name) values ("Reporting");
+insert into user_group (Name) values ("Admin");
 
 --host groups
-insert into HostGroup (Name) values ("all");
-insert into HostGroup (Name) values ("dev_stack");
-insert into HostGroup (Name) values ("preprod");
-insert into HostGroup (Name) values ("prod");
-insert into HostGroup (Name) values ("report");
+insert into host_group (Name) values ("all");
+insert into host_group (Name) values ("dev_stack");
+insert into host_group (Name) values ("preprod");
+insert into host_group (Name) values ("prod");
+insert into host_group (Name) values ("report");
 
 --permission types
 -- do later
 
 --access grants
-insert into Access values ("Audit", "Audit", "all", "read");
-insert into Access values ("Development", "Development", "dev_stack", "schemachanges");
-insert into Access values ("Testing", "Testing", "dev_stack", "readwrite");
-insert into Access values ("Reporting", "Reporting", "all", "readfile");
-insert into Access values ("Admin", "Admin", "all", "all");
+insert into access values ("Audit", "Audit", "all", "read");
+insert into access values ("Development", "Development", "dev_stack", "schemachanges");
+insert into access values ("Testing", "Testing", "dev_stack", "readwrite");
+insert into access values ("Reporting", "Reporting", "all", "readfile");
+insert into access values ("Admin", "Admin", "all", "all");
