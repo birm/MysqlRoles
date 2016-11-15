@@ -13,33 +13,33 @@ CREATE TABLE host (
   PRIMARY KEY (`Name`)
 );
 
-CREATE TABLE UserGroup (
+CREATE TABLE user_roup (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Description` text COLLATE utf8_bin,
   PRIMARY KEY (`Name`)
 );
 
-CREATE TABLE HostGroup (
+CREATE TABLE host_group (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Description` text COLLATE utf8_bin,
   PRIMARY KEY (`Name`)
 );
 
-CREATE TABLE HostGroupMembership (
+CREATE TABLE host_group_membership (
   `HostName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `GroupName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   FOREIGN KEY (`HostName`) REFERENCES Host(Name),
   FOREIGN KEY (`GroupName`) REFERENCES HostGroup(Name)
 );
 
-CREATE TABLE UserGroupMembership (
+CREATE TABLE user_group_membership (
   `UserName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `GroupName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   FOREIGN KEY (`UserName`) REFERENCES User(UserName),
   FOREIGN KEY (`GroupName`) REFERENCES UserGroup(Name)
 );
 
-CREATE TABLE PermissionType (
+CREATE TABLE  permission_type (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Select_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
   `Insert_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
@@ -73,7 +73,7 @@ CREATE TABLE PermissionType (
   PRIMARY KEY (`Name`)
 );
 
-CREATE TABLE Access(
+CREATE TABLE access(
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `UserGroup` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `HostGroup` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
