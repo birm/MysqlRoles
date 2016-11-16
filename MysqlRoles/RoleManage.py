@@ -58,6 +58,7 @@ class RoleManage(object):
         """
         Run a check against the host for consistency, reporting differences.
         """
+        # get users
         # users missing on client
         # users on client but not server
         return ["missing on client", "missing on server", "ok"]
@@ -66,6 +67,11 @@ class RoleManage(object):
         """
         Get the privs of the user on the specified host.
         """
+        # get host groups that touch this host
+        # get user groups that touch this user
+        # find all access that maps them
+        # logical or for each permission
+        pass
 
     def update_users(self, remove=False):
         """
