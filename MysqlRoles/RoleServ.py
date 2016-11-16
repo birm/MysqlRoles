@@ -20,7 +20,8 @@ class RoleServ(object):
         """
         self.server = server
         self.connection = pymysql.connect(host=self.server,
-                                          db='_MysqlRoles')
+                                          db='_MysqlRoles',
+                                          autocommit=True)
 
     def create_tables(self):
         """
@@ -291,6 +292,8 @@ class RoleServ(object):
             cursor.execute(ag_add_stmt, (name, usergroup, hostgroup,
                                          permission))
 
-    """
-    Interact with command line.
-    """
+    def cli(self):
+        """
+        Interact with command line.
+        """
+        pass
