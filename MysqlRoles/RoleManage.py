@@ -1,4 +1,5 @@
 import pymysql
+from MysqlRoles.RoleServ import RoleServ
 
 class RoleManage(object):
 
@@ -27,6 +28,7 @@ class RoleManage(object):
         self.client_con = pymysql.connect(host=self.client,
                                           db='mysql',
                                           autocommit=True)
+        self.RoleServer = RoleServ()
 
     def get_users(self):
         """
@@ -40,20 +42,40 @@ class RoleManage(object):
             result = list(cursor.fetchall())
             return result
 
-    def user_check(self):
+    def get_servers(self):
+        """
+        Get a list of servers managed by this service.
+
+        Returns a list of server addresses managed by the service.
+        """
+        with self.central_con.cursor() as cursor:
+            get_addresses = "select Address from host"
+            cursor.execute(get_users)
+            result = list(cursor.fetchall())
+            return result
+
+    def user_check(self, server):
         """
         Run a check against the host for consistency, reporting differences.
         """
         # users missing on client
-        # users on server but not client
-        # permission differences for matches
-        pass
+        # users on client but not server
+        return ["missing on client", "missing on server", "ok"]
 
-    def update_users(self):
+    def get_privs(self, user, host):
+        """
+        Get the privs of the user on the specified host.
+        """
+
+    def update_users(self, remove=False):
         """
         Make the user inserts to add to the client, and add them.
         """
-        pass
+        for server in self.get_servers():
+            users=self.user_check(server)
+            # add users missing on client
+            if remove:
+                # remove users on client but not server
 
     def cli(self):
         """
