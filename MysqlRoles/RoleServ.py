@@ -1,6 +1,6 @@
 import pymysql
 
-class RolePull(object):
+class RoleServ(object):
 
     """
     RoleServ: Server tools for MysqlRoles.
@@ -193,7 +193,54 @@ class RolePull(object):
              values (%s, %s)"
             cursor.execute(hmem_add_stmt, (hostname, groupname))
 
-    # TODO add permission type add
+    def create_permission(self, name,  allgrant=False):
+        """
+        Create a permission type if it does not exist yet.
+
+        Raises a RuntimeError if the permission already exists
+        Does not check for duplicates.
+        Returns nothing.
+        """
+        # Note that the auth_str default is generated from password('changeme')
+        allyes = ("\"Y\","*29)[:-1]
+        allno = ("\"N\","*29)[:-1]
+        if allgrant:
+            allperm=allyes
+        else:
+            allperm=allno
+        with self.connection.cursor() as cursor:
+            # check if host group exists
+            if cursor.execute("select (1) from permission_type where\
+                                  Name = %s", (name)):
+                # if not, error
+                raise ValueError("Permission type with Name {0}\
+                                   already exists.".format(name))
+            ptype_add_stmt = "insert into permission_type values %s , %s"
+            cursor.execute(ptype_add_stmt, (name, allperm)
+
+    def add_permission(self, name, grant, value="Y"):
+        """
+        Add a permission to a named permission group.
+        Takes in the name of the permission to modify, which grant to perform.
+        Optionally takes in a value, so that it can be used to revoke.
+        grant should be a permission column name for user.
+        Run for each permission desired to change
+
+        Raises a ValueError if the permission type does not exist.
+        Does not check for duplicates.
+        Returns nothing.
+        """
+        # Note that the auth_str default is generated from password('changeme')
+        with self.connection.cursor() as cursor:
+            # check if host group exists
+            if not cursor.execute("select (1) from permission_type where\
+                                  Name = %s", (name)):
+                # if not, error
+                raise ValueError("Permission type with Name {0}\
+                                   does not exist.".format(name))
+            perm_add_stmt = "update host_group_membership  set %s =\
+             %s where Name = %s limit 1"
+            cursor.execute(perm_add_stmt, (grant, value, name))
 
     def add_access(self, name, usergroup, hostgroup, permission):
         """
