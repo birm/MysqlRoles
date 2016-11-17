@@ -67,11 +67,65 @@ class RoleManage(object):
         """
         Get the privs of the user on the specified host.
         """
-        # get host groups that touch this host
-        # get user groups that touch this user
-        # find all access that maps them
-        # logical or for each permission
-        pass
+        with self.central_con.cursor() as cursor:
+            # get host groups that touch this host
+            hg_query = "select GroupName from \
+            host_group_membership where \
+            HostName=%s"
+            cursor.execute(hg_query, (host))
+            hostgroups = list(cursor.fetchall())
+            # get user groups that touch this user
+            ug_query = "select GroupName from \
+            user_group_membership where \
+            UserName=%s"
+            cursor.execute(ug_query, (user))
+            usergroups = list(cursor.fetchall())
+            # find all access that maps them
+            ug_query = "select PermissionType from \
+            access where UserGroup in (%s) and \
+            HostGroup in (%s)"
+            cursor.execute(ug_query,
+                           (",".join(usergroups),
+                            ",".join(hostgroups)))
+            permissiontypes = list(cursor.fetchall())
+            # logical or for each permission
+            # return a list for each permission in order
+            "select \
+            max(Select_priv) ,\
+            max(Insert_priv) ,\
+            max(Update_priv) ,\
+            max(Delete_priv) ,\
+            max(Create_priv) ,\
+            max(Drop_priv) ,\
+            max(Reload_priv) ,\
+            max(Shutdown_priv) ,\
+            max(Process_priv) ,\
+            max(File_priv) ,\
+            max(Grant_priv) ,\
+            max(References_priv) ,\
+            max(Index_priv) ,\
+            max(Alter_priv) ,\
+            max(Show_db_priv) ,\
+            max(Super_priv) ,\
+            max(Create_tmp_table_priv) ,\
+            max(Lock_tables_priv) ,\
+            max(Execute_priv) ,\
+            max(Repl_slave_priv) ,\
+            max(Repl_client_priv) ,\
+            max(Create_view_priv) ,\
+            max(Show_view_priv) ,\
+            max(Create_routine_priv) ,\
+            max(Alter_routine_priv) ,\
+            max(Create_user_priv) ,\
+            max(Event_priv) ,\
+            max(Trigger_priv) ,\
+            max(Create_tablespace_priv) \
+            from permision_type where \
+            Name in (%s)"
+            cursor.execute(ug_query,
+                           (",".join(permissiontypes))
+            permissions = list(cursor.fetchall())
+            return permissions
 
     def update_users(self, remove=False):
         """
