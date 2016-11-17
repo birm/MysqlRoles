@@ -90,7 +90,7 @@ class RoleManage(object):
             permissiontypes = list(cursor.fetchall())
             # logical or for each permission
             # return a list for each permission in order
-            "select \
+            perm_query = "select \
             max(Select_priv) ,\
             max(Insert_priv) ,\
             max(Update_priv) ,\
@@ -122,7 +122,7 @@ class RoleManage(object):
             max(Create_tablespace_priv) \
             from permision_type where \
             Name in (%s)"
-            cursor.execute(ug_query,
+            cursor.execute(perm_query,
                            (",".join(permissiontypes))
             permissions = list(cursor.fetchall())
             return permissions
