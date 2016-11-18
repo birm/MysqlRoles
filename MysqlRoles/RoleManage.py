@@ -124,7 +124,7 @@ class RoleManage(object):
             Name in (%s)"
             cursor.execute(perm_query,
                            (",".join(permissiontypes))
-            permissions = list(cursor.fetchall())
+            permissions = list(cursor.fetchall()[0])
             return permissions
 
     def update_users(self, remove=False):
