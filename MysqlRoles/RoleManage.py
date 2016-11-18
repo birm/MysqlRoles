@@ -54,19 +54,45 @@ class RoleManage(object):
             result = list(cursor.fetchall())
             return result
 
-    def user_check(self, server):
+    def user_check(self):
         """
         Run a check against the host for consistency, reporting differences.
         """
-        # get users
-        # users missing on client
-        # users on client but not server
-        return ["missing on client", "missing on server", "ok"]
+        server = self.client
+        should_users=None
+        there_users=None
+        # get list of users that should be on this host
+        with self.central_con.cursor() as cursor:
+            should_query = "select distinct(u.UserName) \
+            from User u inner join \
+            user_group_membership as ug on u.Name=ug.UserName \
+            join access a on a.UserGroup=ug.GroupName inner join \
+            host_group_membership as hg on \
+            hg.HostName=a.HostGroup \
+            where hg.HostName=%s"
+            cursor.execute(should_query, (server))
+            should_users = list(cursor.fetchall())
+        # get list of users actually on the host
+        with self.client_con.cursor() as cursor:
+            there_query = "select distinct(User) from \
+            mysql.user"
+            cursor.execute(there_query)
+            there_users = list(cursor.fetchall())
+        missing_client = list(set(should_users) -
+                              set(there_users) )
+        missing_server = list(set(there_users) -
+                              set(should_users) )
+        okay_user = list(set(there_users)\
+                         .intersection(should_users)_
+        return [missing_client, missing_server , okay_user]
 
-    def get_privs(self, user, host):
+    def get_privs(self, user):
         """
         Get the privs of the user on the specified host.
+        Returns a list of "Y" or "N" for each permission.
+        Should return an empty list if no results.
         """
+        host = self.client
         with self.central_con.cursor() as cursor:
             # get host groups that touch this host
             hg_query = "select GroupName from \
