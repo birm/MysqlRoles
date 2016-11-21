@@ -86,6 +86,12 @@ class RoleManage(object):
                          .intersection(should_users)_
         return [missing_client, missing_server , okay_user]
 
+    def user_change(self, name, new_user=False):
+        """
+        Creates or updates a user.
+        """
+        pass
+
     def get_privs(self, user):
         """
         Get the privs of the user on the specified host.
@@ -159,7 +165,10 @@ class RoleManage(object):
         """
         for server in self.get_servers():
             users=self.user_check(server)
-            # add users missing on client
+            for add_usr in users[0]:
+                # add users missing on client
+            for update_usr in users[2]:
+                # update permissions
             if remove:
                 # remove users on client but not server
 
