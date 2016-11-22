@@ -101,11 +101,16 @@ class RoleManage(object):
 
     def user_change(self, name, new_user=False):
         """
-        Creates or updates a user.
+        Creates and/or updates a user.
         """
         with self.client_con.cursor() as cursor:
-            user_stmt = "create user if not exists %s"
-            cursor.execute(user_stmt, (name))
+            if new_user:
+                user_stmt = "create user if not exists %s"
+                cursor.execute(user_stmt, (name))
+            perm_vals = ",".join(["\"" + x + "\""
+                                  for x in self.get_privs(name)])[:-1]
+            perm_cols = ",".join(self.permission_order)
+            user_priv_stmt = "update user set (%s)"
 
 
     def get_privs(self, user):
