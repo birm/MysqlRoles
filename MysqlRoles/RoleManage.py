@@ -107,10 +107,14 @@ class RoleManage(object):
             if new_user:
                 user_stmt = "create user if not exists %s"
                 cursor.execute(user_stmt, (name))
-            perm_vals = ",".join(["\"" + x + "\""
-                                  for x in self.get_privs(name)])[:-1]
-            perm_cols = ",".join(self.permission_order)
+            perm_vals = [x=="Y" for x in self.get_privs(name)]
+            perm_cols = self.permission_order
             user_priv_stmt = "update user set (%s)"
+            for perm, col in zip(perm_vals, perm_cols):
+                if perm:
+                    cursor.execute("grant %s on *.* to %s", (col, name))
+                else:
+                    cursor.execute("revoke %s on *.* from %s", (col, name))
 
 
     def get_privs(self, user):
