@@ -6,6 +6,7 @@ class RoleServ(object):
     RoleServ: Server tools for MysqlRoles.
         Functions for intializing the mysql source of truth server
         and functions associated with using it.
+        This class should only manage the server.
 
         Input:
             serv: Address of source of Truth server (default: localhost)
@@ -22,6 +23,12 @@ class RoleServ(object):
         self.connection = pymysql.connect(host=self.server,
                                           db='_MysqlRoles',
                                           autocommit=True)
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        """
+        Close mysql connections on destruction.
+        """
+        self.connection.close()
 
     def create_tables(self):
         """

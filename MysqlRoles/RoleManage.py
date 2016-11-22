@@ -7,6 +7,7 @@ class RoleManage(object):
     RolePush:
         Functions to, from a source of truth, check a DB and make
         the mysql user table match.
+        This class should only manage the client.
 
         Input:
             client: Address of server to make match the source of truth
@@ -41,7 +42,13 @@ class RoleManage(object):
         self.client_con = pymysql.connect(host=self.client,
                                           db='mysql',
                                           autocommit=True)
-        self.RoleServer = RoleServ()
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        """
+        Close mysql connections on destruction.
+        """
+        self.client_con.close()
+        self.central_con.close()
 
     def get_users(self):
         """
@@ -107,6 +114,7 @@ class RoleManage(object):
             if new_user:
                 user_stmt = "create user if not exists %s"
                 cursor.execute(user_stmt, (name))
+            # May need to check if user exists, even though it should.
             perm_vals = [x=="Y" for x in self.get_privs(name)]
             perm_cols = self.permission_order
             user_priv_stmt = "update user set (%s)"
@@ -115,6 +123,14 @@ class RoleManage(object):
                     cursor.execute("grant %s on *.* to %s", (col, name))
                 else:
                     cursor.execute("revoke %s on *.* from %s", (col, name))
+
+    def remove_user(self, name):
+        """
+        Removes a user from a database.
+        Returns nothing.
+        """
+        with self.client_con.cursor() as cursor:
+            cursor.execute("remove user %s", (name))
 
 
     def get_privs(self, user):
@@ -192,10 +208,14 @@ class RoleManage(object):
             users=self.user_check(server)
             for add_usr in users[0]:
                 # add users missing on client
+                self.user_change(add_usr, True)
             for update_usr in users[2]:
                 # update permissions
+                self.user_change(update_usr, False)
             if remove:
                 # remove users on client but not server
+                for rem_usr in users[1]:
+                    self.remove_user(rem_usr)
 
     def cli(self):
         """
