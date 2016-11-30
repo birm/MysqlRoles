@@ -138,6 +138,7 @@ class RoleManage(object):
         Get the privs of the user on the specified host.
         Returns a list of "Y" or "N" for each permission.
         Should return an empty list if no results.
+        Does not manage schema-specific permissions.
         """
         host = self.client
         with self.central_con.cursor() as cursor:
@@ -156,7 +157,7 @@ class RoleManage(object):
             # find all access that maps them
             ug_query = "select PermissionType from \
             access where UserGroup in (%s) and \
-            HostGroup in (%s)"
+            HostGroup in (%s) and Schema=''"
             cursor.execute(ug_query,
                            (",".join(usergroups),
                             ",".join(hostgroups)))
@@ -199,6 +200,12 @@ class RoleManage(object):
                            (",".join(permissiontypes))
             permissions = list(cursor.fetchall()[0])
             return permissions
+
+    def schema_privs(self, user):
+        """
+        Set schema-level permissions for users.
+        """
+        pass
 
     def update_users(self, remove=False):
         """

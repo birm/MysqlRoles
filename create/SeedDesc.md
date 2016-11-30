@@ -38,8 +38,8 @@
 * ReadFile
 
 ## access table ##
-* Audit - all - read
-* Development - dev_stack - SchemaChanges
-* Testing - dev_stack - ReadWrite
-* Reporting - report - ReadFile
-* Admin - All - all
+* Audit - all - read - all schemas
+* Development - dev_stack - SchemaChanges- all schemas
+* Testing - dev_stack - ReadWrite- all schemas
+* Reporting - report - ReadFile- all schemas
+* Admin - All - all- all schemas
