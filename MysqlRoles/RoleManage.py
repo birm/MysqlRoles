@@ -106,16 +106,21 @@ class RoleManage(object):
                          .intersection(should_users)_
         return [missing_client, missing_server , okay_user]
 
-    def user_change(self, name, new_user=False):
+    def user_change(self, name, new_user=False, schema=""):
         """
         Creates and/or updates a user.
         """
         with self.client_con.cursor() as cursor:
+            # make token for grant statement
+            if schema=="":
+                token="*.*"
+            else:
+                token="{schema}.*".format(schema=schema)
             if new_user:
                 user_stmt = "create user if not exists %s"
                 cursor.execute(user_stmt, (name))
             # May need to check if user exists, even though it should.
-            perm_vals = [x=="Y" for x in self.get_privs(name)]
+            perm_vals = [x=="Y" for x in self.get_privs(name, schema)]
             perm_cols = self.permission_order
             user_priv_stmt = "update user set (%s)"
             for perm, col in zip(perm_vals, perm_cols):
@@ -132,8 +137,33 @@ class RoleManage(object):
         with self.client_con.cursor() as cursor:
             cursor.execute("remove user %s", (name))
 
+    def get_schemas(self,user):
+        """
+        Get a list of schemas that a particular user has special access for.
+        Returns a list of these schemas.
+        """
+        # get host groups that touch this host
+        hg_query = "select GroupName from \
+        host_group_membership where \
+        HostName=%s"
+        cursor.execute(hg_query, (host))
+        hostgroups = list(cursor.fetchall())
+        # get user groups that touch this user
+        ug_query = "select GroupName from \
+        user_group_membership where \
+        UserName=%s"
+        cursor.execute(ug_query, (user))
+        usergroups = list(cursor.fetchall())
+        # find all access that maps them
+        ug_query = "select distinct(Schema) from \
+        access where UserGroup in (%s) and \
+        HostGroup in (%s) and Schema<>''"
+        cursor.execute(ug_query,
+                       (",".join(usergroups),
+                        ",".join(hostgroups)))
+        return list(cursor.fetchall())
 
-    def get_privs(self, user):
+    def get_privs(self, user, schema=""):
         """
         Get the privs of the user on the specified host.
         Returns a list of "Y" or "N" for each permission.
@@ -155,9 +185,15 @@ class RoleManage(object):
             cursor.execute(ug_query, (user))
             usergroups = list(cursor.fetchall())
             # find all access that maps them
-            ug_query = "select PermissionType from \
-            access where UserGroup in (%s) and \
-            HostGroup in (%s) and Schema=''"
+            if schema=="":
+                ug_query = "select PermissionType from \
+                access where UserGroup in (%s) and \
+                HostGroup in (%s) and Schema=''"
+            else:
+                ug_query = "select PermissionType from \
+                access where UserGroup in (%s) and \
+                HostGroup in (%s) and \
+                Schema='{schema}'".format(schema=schema)
             cursor.execute(ug_query,
                            (",".join(usergroups),
                             ",".join(hostgroups)))
@@ -205,7 +241,12 @@ class RoleManage(object):
         """
         Set schema-level permissions for users.
         """
-        pass
+        # for each disinct schema touched
+        for schema in self.get_schemas(user):
+            # get the permissions
+            s_perm = self.get_privs(user, schema)
+            # set permissions
+            self.user_change(update_usr, False, schema)
 
     def update_users(self, remove=False):
         """
@@ -216,9 +257,11 @@ class RoleManage(object):
             for add_usr in users[0]:
                 # add users missing on client
                 self.user_change(add_usr, True)
+                self.schema_privs(add_usr)
             for update_usr in users[2]:
                 # update permissions
                 self.user_change(update_usr, False)
+                self.schema_privs(update_usr)
             if remove:
                 # remove users on client but not server
                 for rem_usr in users[1]:
