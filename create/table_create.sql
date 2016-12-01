@@ -78,6 +78,7 @@ CREATE TABLE access(
   `UserGroup` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `HostGroup` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `PermissionType` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `Schema` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   PRIMARY KEY (`Name`),
   FOREIGN KEY (`UserGroup`) REFERENCES UserGroup(Name),
   FOREIGN KEY (`HostGroup`) REFERENCES HostGroup(Name),

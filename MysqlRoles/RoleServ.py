@@ -250,9 +250,12 @@ class RoleServ(object):
              %s where Name = %s limit 1"
             cursor.execute(perm_add_stmt, (grant, value, name))
 
-    def add_access(self, name, usergroup, hostgroup, permission):
+    def add_access(self, name, usergroup, hostgroup, permission, schema=""):
         """
         Give a user group access to a host group.
+        Supports schema-level access, which defaults to empty.
+        Empty Schema parameter means all schemas.
+        Nonempty schema is treated like "grant (privs) on (schema) to (user)"
 
         Raises a RuntimeError if the the access grant exists by name.
         Raises a RuntimeError if the user access grant would be duplicated.
@@ -295,9 +298,9 @@ class RoleServ(object):
                 raise ValueError("Permission type with Name {0}\
                                    does not exist.".format(permission))
             # if all OK, add
-            ag_add_stmt = "insert into access values (%s, %s, %s, %s)"
+            ag_add_stmt = "insert into access values (%s, %s, %s, %s, %s)"
             cursor.execute(ag_add_stmt, (name, usergroup, hostgroup,
-                                         permission))
+                                         permission, schema))
 
     def cli(self):
         """
