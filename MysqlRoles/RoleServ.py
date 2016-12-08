@@ -12,6 +12,22 @@ class RoleServ(object):
             serv: Address of source of Truth server (default: localhost)
     """
 
+    @staticmethod
+    def sanitize(input, allowable_list="[]", default="''"):
+        """
+        Sanitize inputs to avoid issues with pymysql.
+
+        Takes in an input to sanitize.
+        Optionally takes in an list of allowable values and a default.
+        The default is returned if the input is not in the list.
+        Returns a sanizized result.
+        """
+        # add general sanitization
+        if (input in allowable_list or allowable_list == []):
+            return input
+        else:
+            return default
+
     def __init__(self, server="localhost"):
         """
         Get input and set up connection to be used with contexts (with) later.
@@ -27,6 +43,8 @@ class RoleServ(object):
     def __exit__(self, exc_type, exc_value, traceback):
         """
         Close mysql connections on destruction.
+
+        This method may not be necessary, but is here for good practice.
         """
         self.connection.close()
 
@@ -48,7 +66,7 @@ class RoleServ(object):
         """
         # TODO check if tables exist first
         with self.connection.cursor() as cursor:
-            seed_table_stmt = open('../create/seed.sel', 'r').read()
+            seed_table_stmt = open('../create/seed.sql', 'r').read()
             cursor.execute(seed_table_stmt)
 
     """
@@ -64,6 +82,10 @@ class RoleServ(object):
         Raises a RuntimeError if the user already exists.
         Returns nothing.
         """
+        # TODO sanitize name
+        # TODO sanitize fromhost
+        # TODO sanitize plugin
+        # TODO sanitize authstr
         # Note that the auth_str default is generated from password('changeme')
         with self.connection.cursor() as cursor:
             # check if user exists
@@ -83,6 +105,9 @@ class RoleServ(object):
         Raises a RuntimeError if the host already exists.
         Returns nothing.
         """
+        # TODO sanitize address
+        # TODO sanitize name
+        # TODO sanitize comments
         if name == "":
             name = address
         with self.connection.cursor() as cursor:
@@ -104,6 +129,8 @@ class RoleServ(object):
         Raises a RuntimeError if the host group already exists.
         Returns nothing.
         """
+        # TODO sanitize name
+        # TODO sanitize description
         with self.connection.cursor() as cursor:
             # check if host group exists
             if cursor.execute("select (1) from host_group where Name = %s",
@@ -122,6 +149,8 @@ class RoleServ(object):
         Raises a RuntimeError if the user group already exists.
         Returns nothing.
         """
+        # TODO sanitize name
+        # TODO sanitize description
         # Note that the auth_str default is generated from password('changeme')
         with self.connection.cursor() as cursor:
             # check if user group exists
@@ -143,6 +172,8 @@ class RoleServ(object):
         Raises a ValueError if the group does not exist.
         Returns nothing.
         """
+        # TODO sanitize username
+        # TODO sanitize groupname
         with self.connection.cursor() as cursor:
             # check if user exists
             if not cursor.execute("select (1) from user where Name = %s",
@@ -176,6 +207,8 @@ class RoleServ(object):
         Raises a ValueError if the group does not exist.
         Returns nothing.
         """
+        # TODO sanitize hostname
+        # TODO sanitize groupname
         # Note that the auth_str default is generated from password('changeme')
         with self.connection.cursor() as cursor:
             # check if host exists
@@ -209,13 +242,14 @@ class RoleServ(object):
         Does not check for duplicates.
         Returns nothing.
         """
+        # TODO sanitize name
         # Note that the auth_str default is generated from password('changeme')
         allyes = ("\"Y\","*29)[:-1]
         allno = ("\"N\","*29)[:-1]
         if allgrant:
-            allperm=allyes
+            allperm = allyes
         else:
-            allperm=allno
+            allperm = allno
         with self.connection.cursor() as cursor:
             # check if host group exists
             if cursor.execute("select (1) from permission_type where\
@@ -238,6 +272,9 @@ class RoleServ(object):
         Does not check for duplicates.
         Returns nothing.
         """
+        # TODO sanitize name
+        # TODO sanitize grant
+        # TODO sanitize value
         # Note that the auth_str default is generated from password('changeme')
         with self.connection.cursor() as cursor:
             # check if host group exists
@@ -264,6 +301,11 @@ class RoleServ(object):
         Raises a ValueError if the permission type does not exist.
         Returns nothing.
         """
+        # TODO sanitize name
+        # TODO sanitize usergroup
+        # TODO sanitize hostgroup
+        # TODO sanitize permission
+        # TODO sanitize schema
         with self.connection.cursor() as cursor:
             # check if grant exists by name
             if cursor.execute("select (1) from access where Name = %s",

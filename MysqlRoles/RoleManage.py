@@ -27,6 +27,22 @@ class RoleManage(object):
                         "Alter_routine_priv", "Create_user_priv",
                         "Event_priv", "Trigger_priv", "Create_tablespace_priv"]
 
+    @staticmethod
+    def sanitize(input, allowable_list="[]", default="''"):
+        """
+        Sanitize inputs to avoid issues with pymysql.
+
+        Takes in an input to sanitize.
+        Optionally takes in an list of allowable values and a default.
+        The default is returned if the input is not in the list.
+        Returns a sanizized result.
+        """
+        # add general sanitization
+        if (input in allowable_list or allowable_list == []):
+            return input
+        else:
+            return default
+
     def __init__(self, server, client="localhost"):
         """
         Get input and set up connections to be used with contexts (with) later.
@@ -110,6 +126,8 @@ class RoleManage(object):
         """
         Creates and/or updates a user.
         """
+        # TODO sanitize name
+        # TODO sanitize schema
         with self.client_con.cursor() as cursor:
             # make token for grant statement
             if schema=="":
@@ -134,6 +152,7 @@ class RoleManage(object):
         Removes a user from a database.
         Returns nothing.
         """
+        # TODO sanitize name
         with self.client_con.cursor() as cursor:
             cursor.execute("remove user %s", (name))
 
@@ -142,6 +161,7 @@ class RoleManage(object):
         Get a list of schemas that a particular user has special access for.
         Returns a list of these schemas.
         """
+        # TODO sanitize user
         # get host groups that touch this host
         hg_query = "select GroupName from \
         host_group_membership where \
@@ -170,6 +190,8 @@ class RoleManage(object):
         Should return an empty list if no results.
         Does not manage schema-specific permissions.
         """
+        # TODO sanitize user
+        # TODO sanitize schema
         host = self.client
         with self.central_con.cursor() as cursor:
             # get host groups that touch this host
@@ -241,6 +263,7 @@ class RoleManage(object):
         """
         Set schema-level permissions for users.
         """
+        # TODO sanitize user
         # for each disinct schema touched
         for schema in self.get_schemas(user):
             # get the permissions
