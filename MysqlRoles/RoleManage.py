@@ -97,7 +97,7 @@ class RoleManage(object):
         # get list of users that should be on this host
         with self.central_con.cursor() as cursor:
             should_query = "select distinct(u.UserName) \
-            from User u inner join \
+            from user u inner join \
             user_group_membership as ug on u.Name=ug.UserName \
             join access a on a.UserGroup=ug.GroupName inner join \
             host_group_membership as hg on \
