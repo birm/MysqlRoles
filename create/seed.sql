@@ -53,7 +53,7 @@ insert into host_group_membership values ("report", "report"), ("ops", "report")
 -- -- all
 insert into host_group_membership values ("report", "all"), ("staging", "all"), ("testing", "all"), ("cert", "all"), ("prod", "all"), ("ops", "all");
 -- -- localhost
-insert into host_group_membership values ("localhost", "localhost")
+insert into host_group_membership values ("localhost", "localhost");
 
 
 -- access grants
