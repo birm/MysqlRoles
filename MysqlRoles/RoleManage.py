@@ -103,7 +103,7 @@ class RoleManage(object):
         missing_server = list(set(there_users) -
                               set(should_users) )
         okay_user = list(set(there_users)\
-                         .intersection(should_users)_
+                         .intersection(should_users)
         return [missing_client, missing_server , okay_user]
 
     def user_change(self, name, new_user=False, schema=""):
