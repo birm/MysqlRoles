@@ -4,7 +4,7 @@ CREATE TABLE user (
   `Plugin` char(64) COLLATE utf8_bin DEFAULT '',
   `Authentication_String` text COLLATE utf8_bin,
   PRIMARY KEY (`UserName`),
-  ENGINE=InnoDB
+  ENGINE=INNODB
 );
 
 CREATE TABLE host (
@@ -12,21 +12,21 @@ CREATE TABLE host (
   `Address` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Comments` text COLLATE utf8_bin,
   PRIMARY KEY (`Name`),
-  ENGINE=InnoDB
+  ENGINE=INNODB
 );
 
 CREATE TABLE user_group (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Description` text COLLATE utf8_bin,
   PRIMARY KEY (`Name`),
-  ENGINE=InnoDB
+  ENGINE=INNODB
 );
 
 CREATE TABLE host_group (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Description` text COLLATE utf8_bin,
   PRIMARY KEY (`Name`),
-  ENGINE=InnoDB
+  ENGINE=INNODB
 );
 
 CREATE TABLE host_group_membership (
@@ -35,7 +35,7 @@ CREATE TABLE host_group_membership (
   PRIMARY KEY (`HostName`,`GroupName`),
   FOREIGN KEY (`HostName`) REFERENCES Host(Name),
   FOREIGN KEY (`GroupName`) REFERENCES HostGroup(Name),
-  ENGINE=InnoDB
+  ENGINE=INNODB
 );
 
 CREATE TABLE user_group_membership (
@@ -44,7 +44,7 @@ CREATE TABLE user_group_membership (
   PRIMARY KEY (`UserName`,`GroupName`),
   FOREIGN KEY (`UserName`) REFERENCES User(UserName),
   FOREIGN KEY (`GroupName`) REFERENCES UserGroup(Name),
-  ENGINE=InnoDB
+  ENGINE=INNODB
 );
 
 CREATE TABLE  permission_type (
@@ -79,7 +79,7 @@ CREATE TABLE  permission_type (
   `Trigger_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
   `Create_tablespace_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
   PRIMARY KEY (`Name`),
-  ENGINE=InnoDB
+  ENGINE=INNODB
 );
 
 CREATE TABLE access(
@@ -93,5 +93,5 @@ CREATE TABLE access(
   FOREIGN KEY (`UserGroup`) REFERENCES UserGroup(Name),
   FOREIGN KEY (`HostGroup`) REFERENCES HostGroup(Name),
   FOREIGN KEY (`PermissionType`) REFERENCES PermissionType(Name),
-  ENGINE=InnoDB
+  ENGINE=INNODB
 );
