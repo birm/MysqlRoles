@@ -98,7 +98,7 @@ class RoleManage(object):
         with self.central_con.cursor() as cursor:
             should_query = "select distinct(u.UserName) \
             from user u inner join \
-            user_group_membership as ug on u.Name=ug.UserName \
+            user_group_membership as ug on u.UserName=ug.UserName \
             join access a on a.UserGroup=ug.GroupName inner join \
             host_group_membership as hg on \
             hg.HostName=a.HostGroup \
