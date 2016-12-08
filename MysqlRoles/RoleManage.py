@@ -233,7 +233,7 @@ class RoleManage(object):
             from permision_type where \
             Name in (%s)"
             cursor.execute(perm_query,
-                           (",".join(permissiontypes))
+                           (",".join(permissiontypes)))
             permissions = list(cursor.fetchall()[0])
             return permissions
 
