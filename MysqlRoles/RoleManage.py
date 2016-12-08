@@ -138,6 +138,7 @@ class RoleManage(object):
         schema = RoleManage.sanitize(schema)
         with self.client_con.cursor() as cursor:
             # make token for grant statement
+            token = ""
             if schema == "":
                 token = "*.*"
             else:
@@ -148,12 +149,11 @@ class RoleManage(object):
             # May need to check if user exists, even though it should.
             perm_vals = [x == "Y" for x in self.get_privs(name, schema)]
             perm_cols = self.permission_order
-            user_priv_stmt = "update user set (%s)"
             for perm, col in zip(perm_vals, perm_cols):
                 if perm:
-                    cursor.execute("grant %s on *.* to %s", (col, name))
+                    cursor.execute("grant %s on %s to %s", (col, token, name))
                 else:
-                    cursor.execute("revoke %s on *.* from %s", (col, name))
+                    cursor.execute("revoke %s on %s from %s", (col, token, name))
 
     def remove_user(self, name):
         """
@@ -161,38 +161,39 @@ class RoleManage(object):
 
         Returns nothing.
         """
-        # TODO sanitize name
+        name = RoleManage.sanitize(name)
         with self.client_con.cursor() as cursor:
             cursor.execute("remove user %s", (name))
 
-    def get_schemas(self,user):
+    def get_schemas(self, user):
         """
         Get a list of schemas that a particular user has special access for.
 
         Returns a list of these schemas.
         """
-        # TODO fix context
-        user = RoleManage.sanitize(user)
-        # get host groups that touch this host
-        hg_query = "select GroupName from \
-        host_group_membership where \
-        HostName=%s"
-        cursor.execute(hg_query, (host))
-        hostgroups = list(cursor.fetchall())
-        # get user groups that touch this user
-        ug_query = "select GroupName from \
-        user_group_membership where \
-        UserName=%s"
-        cursor.execute(ug_query, (user))
-        usergroups = list(cursor.fetchall())
-        # find all access that maps them
-        ug_query = "select distinct(Schema) from \
-        access where UserGroup in (%s) and \
-        HostGroup in (%s) and Schema<>''"
-        cursor.execute(ug_query,
-                       (",".join(usergroups),
-                        ",".join(hostgroups)))
-        return list(cursor.fetchall())
+        with self.client_con.cursor() as cursor:
+            # TODO fix context
+            user = RoleManage.sanitize(user)
+            # get host groups that touch this host
+            hg_query = "select GroupName from \
+            host_group_membership where \
+            HostName=%s"
+            cursor.execute(hg_query, (host))
+            hostgroups = list(cursor.fetchall())
+            # get user groups that touch this user
+            ug_query = "select GroupName from \
+            user_group_membership where \
+            UserName=%s"
+            cursor.execute(ug_query, (user))
+            usergroups = list(cursor.fetchall())
+            # find all access that maps them
+            ug_query = "select distinct(Schema) from \
+            access where UserGroup in (%s) and \
+            HostGroup in (%s) and Schema<>''"
+            cursor.execute(ug_query,
+                           (",".join(usergroups),
+                            ",".join(hostgroups)))
+            return list(cursor.fetchall())
 
     def get_privs(self, user, schema=""):
         """
@@ -219,7 +220,7 @@ class RoleManage(object):
             cursor.execute(ug_query, (user))
             usergroups = list(cursor.fetchall())
             # find all access that maps them
-            if schema=="":
+            if schema == "":
                 ug_query = "select PermissionType from \
                 access where UserGroup in (%s) and \
                 HostGroup in (%s) and Schema=''"
@@ -288,7 +289,7 @@ class RoleManage(object):
         Make the user inserts to add to the client, and add them.
         """
         for server in self.get_servers():
-            users=self.user_check(server)
+            users = self.user_check(server)
             for add_usr in users[0]:
                 # add users missing on client
                 self.user_change(add_usr, True)
