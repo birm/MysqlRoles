@@ -27,7 +27,7 @@ class RoleManage(object):
                         "Alter_routine_priv", "Create_user_priv",
                         "Event_priv", "Trigger_priv", "Create_tablespace_priv"]
 
-    def __init__(self, client, server="localhost"):
+    def __init__(self, server, client="localhost"):
         """
         Get input and set up connections to be used with contexts (with) later.
 
