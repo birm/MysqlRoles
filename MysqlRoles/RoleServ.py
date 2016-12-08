@@ -224,7 +224,7 @@ class RoleServ(object):
                 raise ValueError("Permission type with Name {0}\
                                    already exists.".format(name))
             ptype_add_stmt = "insert into permission_type values %s , %s"
-            cursor.execute(ptype_add_stmt, (name, allperm)
+            cursor.execute(ptype_add_stmt, (name, allperm))
 
     def add_permission(self, name, grant, value="Y"):
         """
