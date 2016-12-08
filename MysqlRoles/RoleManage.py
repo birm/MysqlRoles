@@ -39,7 +39,7 @@ class RoleManage(object):
         Returns a sanizized result.
         """
         # add general sanitization
-        if (input in allowable_list or allowable_list == []):
+        if (input in allowable_list) or allowable_list == []:
             return input
         else:
             return default
