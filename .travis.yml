@@ -8,8 +8,8 @@ services:
 
 before_install:
   - mysql -e 'CREATE DATABASE _MysqlRoles;'
-  - mysql < create/table_create.sql
-  - mysql < create/seed.sql
+  - mysql _MysqlRoles < create/table_create.sql
+  - mysql _MysqlRoles < create/seed.sql
 
 install:
     - pip install pytest pytest-cov
