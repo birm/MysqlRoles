@@ -63,4 +63,4 @@ insert into access values ("Development", "Development", "dev_stack", "schemacha
 insert into access values ("Testing", "Testing", "dev_stack", "readwrite", "");
 insert into access values ("Reporting", "Reporting", "all", "readfile", "");
 insert into access values ("Admin", "Admin", "all", "ALL", "");
-insert into access values ("Testing", "Testing", "localhost", "readwrite", "");
+insert into access values ("Testing_localhost", "Testing", "localhost", "readwrite", "");
