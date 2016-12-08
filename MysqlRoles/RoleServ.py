@@ -82,10 +82,10 @@ class RoleServ(object):
         Raises a RuntimeError if the user already exists.
         Returns nothing.
         """
-        # TODO sanitize name
-        # TODO sanitize fromhost
-        # TODO sanitize plugin
-        # TODO sanitize authstr
+        name = RoleServ.sanitize(name)
+        fromhost = RoleServ.sanitize(fromhost)
+        plugin = RoleServ.sanitize(plugin)
+        auth_str = RoleServ.sanitize(auth_str)
         # Note that the auth_str default is generated from password('changeme')
         with self.connection.cursor() as cursor:
             # check if user exists
@@ -105,9 +105,9 @@ class RoleServ(object):
         Raises a RuntimeError if the host already exists.
         Returns nothing.
         """
-        # TODO sanitize address
-        # TODO sanitize name
-        # TODO sanitize comments
+        address = RoleServ.sanitize(address)
+        name = RoleServ.sanitize(name)
+        comments = RoleServ.sanitize(comments)
         if name == "":
             name = address
         with self.connection.cursor() as cursor:
@@ -129,8 +129,8 @@ class RoleServ(object):
         Raises a RuntimeError if the host group already exists.
         Returns nothing.
         """
-        # TODO sanitize name
-        # TODO sanitize description
+        name = RoleServ.sanitize(name)
+        description = RoleServ.sanitize(description)
         with self.connection.cursor() as cursor:
             # check if host group exists
             if cursor.execute("select (1) from host_group where Name = %s",
@@ -149,8 +149,8 @@ class RoleServ(object):
         Raises a RuntimeError if the user group already exists.
         Returns nothing.
         """
-        # TODO sanitize name
-        # TODO sanitize description
+        name = RoleServ.sanitize(name)
+        description = RoleServ.sanitize(description)
         # Note that the auth_str default is generated from password('changeme')
         with self.connection.cursor() as cursor:
             # check if user group exists
@@ -172,8 +172,8 @@ class RoleServ(object):
         Raises a ValueError if the group does not exist.
         Returns nothing.
         """
-        # TODO sanitize username
-        # TODO sanitize groupname
+        username = RoleServ.sanitize(username)
+        groupname = RoleServ.sanitize(groupname)
         with self.connection.cursor() as cursor:
             # check if user exists
             if not cursor.execute("select (1) from user where Name = %s",
@@ -207,8 +207,8 @@ class RoleServ(object):
         Raises a ValueError if the group does not exist.
         Returns nothing.
         """
-        # TODO sanitize hostname
-        # TODO sanitize groupname
+        hostname = RoleServ.sanitize(hostname)
+        groupname = RoleServ.sanitize(groupname)
         # Note that the auth_str default is generated from password('changeme')
         with self.connection.cursor() as cursor:
             # check if host exists
@@ -242,7 +242,7 @@ class RoleServ(object):
         Does not check for duplicates.
         Returns nothing.
         """
-        # TODO sanitize name
+        name = RoleServ.sanitize(name)
         # Note that the auth_str default is generated from password('changeme')
         allyes = ("\"Y\","*29)[:-1]
         allno = ("\"N\","*29)[:-1]
@@ -272,12 +272,13 @@ class RoleServ(object):
         Does not check for duplicates.
         Returns nothing.
         """
-        # TODO sanitize name
-        # TODO sanitize grant
+        name = RoleServ.sanitize(name)
+        grant = RoleServ.sanitize(grant)
+        value = RoleServ.sanitize(value, ["Y","N"], "N")
         # TODO sanitize value
         # Note that the auth_str default is generated from password('changeme')
         with self.connection.cursor() as cursor:
-            # check if host group exists
+            # check if permission type exists
             if not cursor.execute("select (1) from permission_type where\
                                   Name = %s", (name)):
                 # if not, error
@@ -290,6 +291,7 @@ class RoleServ(object):
     def add_access(self, name, usergroup, hostgroup, permission, schema=""):
         """
         Give a user group access to a host group.
+
         Supports schema-level access, which defaults to empty.
         Empty Schema parameter means all schemas.
         Nonempty schema is treated like "grant (privs) on (schema) to (user)"
@@ -301,11 +303,11 @@ class RoleServ(object):
         Raises a ValueError if the permission type does not exist.
         Returns nothing.
         """
-        # TODO sanitize name
-        # TODO sanitize usergroup
-        # TODO sanitize hostgroup
-        # TODO sanitize permission
-        # TODO sanitize schema
+        name = RoleServ.sanitize(name)
+        usergroup = RoleServ.sanitize(usergroup)
+        hostgroup = RoleServ.sanitize(hostgroup)
+        permission = RoleServ.sanitize(permision)
+        schema = RoleServ.sanitize(schema)
         with self.connection.cursor() as cursor:
             # check if grant exists by name
             if cursor.execute("select (1) from access where Name = %s",
