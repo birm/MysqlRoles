@@ -29,7 +29,7 @@ class RoleManage(object):
                         "Event_priv", "Trigger_priv", "Create_tablespace_priv"]
 
     @staticmethod
-    def sanitize(input, allowable_list="[]", default="''"):
+    def sanitize(input, allowable_list=[], default="''"):
         """
         Sanitize inputs to avoid issues with pymysql.
 
