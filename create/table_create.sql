@@ -9,20 +9,17 @@ CREATE TABLE host (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Address` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Comments` text COLLATE utf8_bin,
-  PRIMARY KEY (`Name`)
-  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`Name`));
 
 CREATE TABLE user_group (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Description` text COLLATE utf8_bin,
-  PRIMARY KEY (`Name`))
-  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`Name`));
 
 CREATE TABLE host_group (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Description` text COLLATE utf8_bin,
-  PRIMARY KEY (`Name`))
-  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`Name`));
 
 CREATE TABLE host_group_membership (
   `HostName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
