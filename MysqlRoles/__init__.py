@@ -1,6 +1,4 @@
-__all__ = ["RolePull",
-           "RolePush"
-           "RoleServ"]
-from MysqlRoles.RolePull import RolePull
-from MysqlRoles.RolePush import RolePush
+__all__ = ["RoleServ",
+           "RoleManage"]
 from MysqlRoles.RoleServ import RoleServ
+from MysqlRoles.RoleManage import RoleManage
