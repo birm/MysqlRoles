@@ -1,4 +1,5 @@
 import pymysql
+import socket
 
 
 class RoleManage(object):
@@ -51,8 +52,8 @@ class RoleManage(object):
         Standard dunder/magic method; returns nothing special.
         No special input validation.
         """
-        self.server = server
-        self.client = client
+        self.server = socket.gethostbyname(server)
+        self.client = socket.gethostbyname(client)
         self.central_con = pymysql.connect(host=self.server,
                                            db='_MysqlRoles',
                                            autocommit=True)
@@ -164,9 +165,8 @@ class RoleManage(object):
         with self.client_con.cursor() as cursor:
             user = RoleManage.sanitize(user)
             # get host groups that touch this host
-            hg_query = "select GroupName from \
-            host_group_membership where \
-            HostName=%s"
+            hg_query = "select GroupName from host_group_membership hgm \
+            join host h on hgm.Hostname=h.name where h.Address=%s"
             cursor.execute(hg_query, (self.client))
             hostgroups = list(cursor.fetchall())
             # get user groups that touch this user
@@ -197,9 +197,8 @@ class RoleManage(object):
         host = self.client
         with self.central_con.cursor() as cursor:
             # get host groups that touch this host
-            hg_query = "select GroupName from \
-            host_group_membership where \
-            HostName=%s"
+            hg_query = "select GroupName from host_group_membership hgm \
+            join host h on hgm.Hostname=h.name where h.Address=%s"
             cursor.execute(hg_query, (host))
             hostgroups = list(cursor.fetchall())
             # get user groups that touch this user
