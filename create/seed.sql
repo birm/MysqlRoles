@@ -55,7 +55,7 @@ insert into host_group_membership values ("report", "all"), ("staging", "all"), 
 
 -- access grants
 insert into access values ("Audit", "Audit", "all", "read", "");
-insert into access values ("Development", "Development", "dev_stack", "schemachanges", "");
+insert into access values ("Development", "Development", "dev_stack", "schemachange", "");
 insert into access values ("Testing", "Testing", "dev_stack", "readwrite", "");
 insert into access values ("Reporting", "Reporting", "all", "readfile", "");
 insert into access values ("Admin", "Admin", "all", "ALL", "");
