@@ -12,6 +12,22 @@ class RoleServ(object):
             serv: Address of source of Truth server (default: localhost)
     """
 
+    @staticmethod
+    def sanitize(input, allowable_list="[]", default="''"):
+        """
+        Sanitize inputs to avoid issues with pymysql.
+
+        Takes in an input to sanitize.
+        Optionally takes in an list of allowable values and a default.
+        The default is returned if the input is not in the list.
+        Returns a sanizized result.
+        """
+        # add general sanitization
+        if (input in allowable_list or allowable_list == []):
+            return input
+        else:
+            return default
+
     def __init__(self, server="localhost"):
         """
         Get input and set up connection to be used with contexts (with) later.
@@ -27,6 +43,8 @@ class RoleServ(object):
     def __exit__(self, exc_type, exc_value, traceback):
         """
         Close mysql connections on destruction.
+
+        This method may not be necessary, but is here for good practice.
         """
         self.connection.close()
 
@@ -48,7 +66,7 @@ class RoleServ(object):
         """
         # TODO check if tables exist first
         with self.connection.cursor() as cursor:
-            seed_table_stmt = open('../create/seed.sel', 'r').read()
+            seed_table_stmt = open('../create/seed.sql', 'r').read()
             cursor.execute(seed_table_stmt)
 
     """
@@ -64,6 +82,10 @@ class RoleServ(object):
         Raises a RuntimeError if the user already exists.
         Returns nothing.
         """
+        name = RoleServ.sanitize(name)
+        fromhost = RoleServ.sanitize(fromhost)
+        plugin = RoleServ.sanitize(plugin)
+        auth_str = RoleServ.sanitize(auth_str)
         # Note that the auth_str default is generated from password('changeme')
         with self.connection.cursor() as cursor:
             # check if user exists
@@ -83,6 +105,9 @@ class RoleServ(object):
         Raises a RuntimeError if the host already exists.
         Returns nothing.
         """
+        address = RoleServ.sanitize(address)
+        name = RoleServ.sanitize(name)
+        comments = RoleServ.sanitize(comments)
         if name == "":
             name = address
         with self.connection.cursor() as cursor:
@@ -104,6 +129,8 @@ class RoleServ(object):
         Raises a RuntimeError if the host group already exists.
         Returns nothing.
         """
+        name = RoleServ.sanitize(name)
+        description = RoleServ.sanitize(description)
         with self.connection.cursor() as cursor:
             # check if host group exists
             if cursor.execute("select (1) from host_group where Name = %s",
@@ -122,6 +149,8 @@ class RoleServ(object):
         Raises a RuntimeError if the user group already exists.
         Returns nothing.
         """
+        name = RoleServ.sanitize(name)
+        description = RoleServ.sanitize(description)
         # Note that the auth_str default is generated from password('changeme')
         with self.connection.cursor() as cursor:
             # check if user group exists
@@ -143,6 +172,8 @@ class RoleServ(object):
         Raises a ValueError if the group does not exist.
         Returns nothing.
         """
+        username = RoleServ.sanitize(username)
+        groupname = RoleServ.sanitize(groupname)
         with self.connection.cursor() as cursor:
             # check if user exists
             if not cursor.execute("select (1) from user where Name = %s",
@@ -176,6 +207,8 @@ class RoleServ(object):
         Raises a ValueError if the group does not exist.
         Returns nothing.
         """
+        hostname = RoleServ.sanitize(hostname)
+        groupname = RoleServ.sanitize(groupname)
         # Note that the auth_str default is generated from password('changeme')
         with self.connection.cursor() as cursor:
             # check if host exists
@@ -209,13 +242,14 @@ class RoleServ(object):
         Does not check for duplicates.
         Returns nothing.
         """
+        name = RoleServ.sanitize(name)
         # Note that the auth_str default is generated from password('changeme')
         allyes = ("\"Y\","*29)[:-1]
         allno = ("\"N\","*29)[:-1]
         if allgrant:
-            allperm=allyes
+            allperm = allyes
         else:
-            allperm=allno
+            allperm = allno
         with self.connection.cursor() as cursor:
             # check if host group exists
             if cursor.execute("select (1) from permission_type where\
@@ -238,9 +272,13 @@ class RoleServ(object):
         Does not check for duplicates.
         Returns nothing.
         """
+        name = RoleServ.sanitize(name)
+        grant = RoleServ.sanitize(grant)
+        value = RoleServ.sanitize(value, ["Y","N"], "N")
+        # TODO sanitize value
         # Note that the auth_str default is generated from password('changeme')
         with self.connection.cursor() as cursor:
-            # check if host group exists
+            # check if permission type exists
             if not cursor.execute("select (1) from permission_type where\
                                   Name = %s", (name)):
                 # if not, error
@@ -253,6 +291,7 @@ class RoleServ(object):
     def add_access(self, name, usergroup, hostgroup, permission, schema=""):
         """
         Give a user group access to a host group.
+
         Supports schema-level access, which defaults to empty.
         Empty Schema parameter means all schemas.
         Nonempty schema is treated like "grant (privs) on (schema) to (user)"
@@ -264,6 +303,11 @@ class RoleServ(object):
         Raises a ValueError if the permission type does not exist.
         Returns nothing.
         """
+        name = RoleServ.sanitize(name)
+        usergroup = RoleServ.sanitize(usergroup)
+        hostgroup = RoleServ.sanitize(hostgroup)
+        permission = RoleServ.sanitize(permision)
+        schema = RoleServ.sanitize(schema)
         with self.connection.cursor() as cursor:
             # check if grant exists by name
             if cursor.execute("select (1) from access where Name = %s",
