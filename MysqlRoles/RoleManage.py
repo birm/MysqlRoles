@@ -1,10 +1,11 @@
 import pymysql
-from MysqlRoles.RoleServ import RoleServ
+
 
 class RoleManage(object):
 
     """
-    RolePush:
+    RolePush.
+
         Functions to, from a source of truth, check a DB and make
         the mysql user table match.
         This class should only manage the client.
@@ -78,18 +79,6 @@ class RoleManage(object):
             result = list(cursor.fetchall())
             return result
 
-    def get_servers(self):
-        """
-        Get a list of servers managed by this service.
-
-        Returns a list of server addresses managed by the service.
-        """
-        with self.central_con.cursor() as cursor:
-            get_addresses = "select Address from host"
-            cursor.execute(get_addresses)
-            result = list(cursor.fetchall())
-            return result
-
     def user_check(self):
         """
         Run a check against the host for consistency.
@@ -153,7 +142,8 @@ class RoleManage(object):
                 if perm:
                     cursor.execute("grant %s on %s to %s", (col, token, name))
                 else:
-                    cursor.execute("revoke %s on %s from %s", (col, token, name))
+                    cursor.execute("revoke %s on %s from %s",
+                                   (col, token, name))
 
     def remove_user(self, name):
         """
@@ -172,13 +162,12 @@ class RoleManage(object):
         Returns a list of these schemas.
         """
         with self.client_con.cursor() as cursor:
-            # TODO fix context
             user = RoleManage.sanitize(user)
             # get host groups that touch this host
             hg_query = "select GroupName from \
             host_group_membership where \
             HostName=%s"
-            cursor.execute(hg_query, (host))
+            cursor.execute(hg_query, (self.client))
             hostgroups = list(cursor.fetchall())
             # get user groups that touch this user
             ug_query = "select GroupName from \
@@ -279,29 +268,26 @@ class RoleManage(object):
         user = RoleManage.sanitize(user)
         # for each disinct schema touched
         for schema in self.get_schemas(user):
-            # get the permissions
-            s_perm = self.get_privs(user, schema)
             # set permissions
-            self.user_change(update_usr, False, schema)
+            self.user_change(user, False, schema)
 
     def update_users(self, remove=False):
         """
         Make the user inserts to add to the client, and add them.
         """
-        for server in self.get_servers():
-            users = self.user_check(server)
-            for add_usr in users[0]:
-                # add users missing on client
-                self.user_change(add_usr, True)
-                self.schema_privs(add_usr)
-            for update_usr in users[2]:
-                # update permissions
-                self.user_change(update_usr, False)
-                self.schema_privs(update_usr)
-            if remove:
-                # remove users on client but not server
-                for rem_usr in users[1]:
-                    self.remove_user(rem_usr)
+        users = self.user_check()
+        for add_usr in users[0]:
+            # add users missing on client
+            self.user_change(add_usr, True)
+            self.schema_privs(add_usr)
+        for update_usr in users[2]:
+            # update permissions
+            self.user_change(update_usr, False)
+            self.schema_privs(update_usr)
+        if remove:
+            # remove users on client but not server
+            for rem_usr in users[1]:
+                self.remove_user(rem_usr)
 
     def cli(self):
         """
