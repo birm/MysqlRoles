@@ -6,4 +6,4 @@ def test_default_init():
 def test_update_users():
     """Checks the basic functionality of RoleManage on a client."""
     rm = RoleManage("localhost")
-    rm.update_users(True)
+    rm.update_users()

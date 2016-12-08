@@ -153,7 +153,7 @@ class RoleManage(object):
         """
         name = RoleManage.sanitize(name)
         with self.client_con.cursor() as cursor:
-            cursor.execute("remove user %s", (name))
+            cursor.execute("drop user %s", (name))
 
     def get_schemas(self, user):
         """
