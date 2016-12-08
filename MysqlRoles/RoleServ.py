@@ -275,7 +275,6 @@ class RoleServ(object):
         name = RoleServ.sanitize(name)
         grant = RoleServ.sanitize(grant)
         value = RoleServ.sanitize(value, ["Y","N"], "N")
-        # TODO sanitize value
         # Note that the auth_str default is generated from password('changeme')
         with self.connection.cursor() as cursor:
             # check if permission type exists
