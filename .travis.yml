@@ -8,8 +8,6 @@ services:
 
 before_install:
   - mysql -e 'CREATE DATABASE _MysqlRoles;'
-  - mysql _MysqlRoles < create/table_create.sql
-  - mysql _MysqlRoles < create/seed.sql
 
 install:
     - pip install pytest pytest-cov
@@ -17,4 +15,5 @@ install:
     - travis_retry python setup.py install
 
 script:
+    - py.test MysqlRoles/tests/test_prerun.py
     - py.test MysqlRoles/tests/test_default_inits.py
