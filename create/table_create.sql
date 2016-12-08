@@ -3,8 +3,7 @@ CREATE TABLE user (
   `UserName` char(16) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Plugin` char(64) COLLATE utf8_bin DEFAULT '',
   `Authentication_String` text COLLATE utf8_bin,
-  PRIMARY KEY (`UserName`))
-  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`UserName`));
 
 CREATE TABLE host (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
