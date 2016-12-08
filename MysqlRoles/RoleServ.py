@@ -55,7 +55,7 @@ class RoleServ(object):
         Returns nothing.
         """
         with self.connection.cursor() as cursor:
-            create_stmt = open('../create/table_create.sql', 'r').read()
+            create_stmt = open('create/table_create.sql', 'r').read()
             cursor.execute(create_stmt)
 
     def test_seed_tables(self):
@@ -66,7 +66,7 @@ class RoleServ(object):
         """
         # TODO check if tables exist first
         with self.connection.cursor() as cursor:
-            seed_table_stmt = open('../create/seed.sql', 'r').read()
+            seed_table_stmt = open('create/seed.sql', 'r').read()
             cursor.execute(seed_table_stmt)
 
     """
