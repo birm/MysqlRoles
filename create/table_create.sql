@@ -3,30 +3,30 @@ CREATE TABLE user (
   `UserName` char(16) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Plugin` char(64) COLLATE utf8_bin DEFAULT '',
   `Authentication_String` text COLLATE utf8_bin,
-  PRIMARY KEY (`UserName`),
-  ENGINE=INNODB
+  PRIMARY KEY (`UserName`)
+  ENGINE=INNODB DEFAULT CHARSET=utf8
 );
 
 CREATE TABLE host (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Address` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Comments` text COLLATE utf8_bin,
-  PRIMARY KEY (`Name`),
-  ENGINE=INNODB
+  PRIMARY KEY (`Name`)
+  ENGINE=INNODB DEFAULT CHARSET=utf8
 );
 
 CREATE TABLE user_group (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Description` text COLLATE utf8_bin,
-  PRIMARY KEY (`Name`),
-  ENGINE=INNODB
+  PRIMARY KEY (`Name`)
+  ENGINE=INNODB DEFAULT CHARSET=utf8
 );
 
 CREATE TABLE host_group (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Description` text COLLATE utf8_bin,
-  PRIMARY KEY (`Name`),
-  ENGINE=INNODB
+  PRIMARY KEY (`Name`)
+  ENGINE=INNODB DEFAULT CHARSET=utf8
 );
 
 CREATE TABLE host_group_membership (
@@ -34,8 +34,8 @@ CREATE TABLE host_group_membership (
   `GroupName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   PRIMARY KEY (`HostName`,`GroupName`),
   FOREIGN KEY (`HostName`) REFERENCES Host(Name),
-  FOREIGN KEY (`GroupName`) REFERENCES HostGroup(Name),
-  ENGINE=INNODB
+  FOREIGN KEY (`GroupName`) REFERENCES HostGroup(Name)
+  ENGINE=INNODB DEFAULT CHARSET=utf8
 );
 
 CREATE TABLE user_group_membership (
@@ -43,8 +43,8 @@ CREATE TABLE user_group_membership (
   `GroupName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   PRIMARY KEY (`UserName`,`GroupName`),
   FOREIGN KEY (`UserName`) REFERENCES User(UserName),
-  FOREIGN KEY (`GroupName`) REFERENCES UserGroup(Name),
-  ENGINE=INNODB
+  FOREIGN KEY (`GroupName`) REFERENCES UserGroup(Name)
+  ENGINE=INNODB DEFAULT CHARSET=utf8
 );
 
 CREATE TABLE  permission_type (
@@ -78,8 +78,8 @@ CREATE TABLE  permission_type (
   `Event_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
   `Trigger_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
   `Create_tablespace_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`Name`),
-  ENGINE=INNODB
+  PRIMARY KEY (`Name`)
+  ENGINE=INNODB DEFAULT CHARSET=utf8
 );
 
 CREATE TABLE access(
@@ -92,6 +92,6 @@ CREATE TABLE access(
   index `relation_idx` (`UserGroup`,`HostGroup`,`PermissionType`),
   FOREIGN KEY (`UserGroup`) REFERENCES UserGroup(Name),
   FOREIGN KEY (`HostGroup`) REFERENCES HostGroup(Name),
-  FOREIGN KEY (`PermissionType`) REFERENCES PermissionType(Name),
-  ENGINE=INNODB
+  FOREIGN KEY (`PermissionType`) REFERENCES PermissionType(Name)
+  ENGINE=INNODB DEFAULT CHARSET=utf8
 );
