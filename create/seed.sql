@@ -12,6 +12,7 @@ insert into host values ("testing", "testing", "main testing host");
 insert into host values ("cert", "cert", "main cert host");
 insert into host values ("prod", "prod", "main prod host");
 insert into host values ("ops", "ops", "main ops host");
+insert into host values ("localhost", "localhost", "this server");
 
 -- user groups
 insert into user_group (Name) values ("Audit");

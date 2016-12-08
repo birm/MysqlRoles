@@ -52,8 +52,10 @@ class RoleManage(object):
         Standard dunder/magic method; returns nothing special.
         No special input validation.
         """
-        self.server = socket.gethostbyname(server)
-        self.client = socket.gethostbyname(client)
+        self.server = server
+        self.client = client
+        self.server_ip = socket.gethostbyname(server)
+        self.client_ip = socket.gethostbyname(client)
         self.central_con = pymysql.connect(host=self.server,
                                            db='_MysqlRoles',
                                            autocommit=True)
@@ -92,7 +94,6 @@ class RoleManage(object):
         The third element of the list is
         a list of users present on both the server and the client.
         """
-        server = self.client
         should_users = None
         there_users = None
         # get list of users that should be on this host
@@ -102,9 +103,9 @@ class RoleManage(object):
             user_group_membership as ug on u.UserName=ug.UserName \
             join access a on a.UserGroup=ug.GroupName inner join \
             host_group_membership as hg on \
-            hg.HostName=a.HostGroup \
-            where hg.HostName=%s"
-            cursor.execute(should_query, (server))
+            hg.HostName=a.HostGroup join host h on h.Name=hg.HostName \
+            where hg.HostName=%s or h.Address=%s"
+            cursor.execute(should_query, (self.client, self.client_ip))
             should_users = list(cursor.fetchall())
         # get list of users actually on the host
         with self.client_con.cursor() as cursor:
@@ -166,8 +167,9 @@ class RoleManage(object):
             user = RoleManage.sanitize(user)
             # get host groups that touch this host
             hg_query = "select GroupName from host_group_membership hgm \
-            join host h on hgm.Hostname=h.name where h.Address=%s"
-            cursor.execute(hg_query, (self.client))
+            join host h on hgm.Hostname=h.name where \
+            h.name = %s or h.Address=%s"
+            cursor.execute(hg_query, (self.client, self.client_ip))
             hostgroups = list(cursor.fetchall())
             # get user groups that touch this user
             ug_query = "select GroupName from \
@@ -194,12 +196,12 @@ class RoleManage(object):
         """
         user = RoleManage.sanitize(user)
         schema = RoleManage.sanitize(schema)
-        host = self.client
         with self.central_con.cursor() as cursor:
             # get host groups that touch this host
             hg_query = "select GroupName from host_group_membership hgm \
-            join host h on hgm.Hostname=h.name where h.Address=%s"
-            cursor.execute(hg_query, (host))
+            join host h on hgm.Hostname=h.name where \
+            h.name = %s or h.Address=%s"
+            cursor.execute(hg_query, (self.client, self.client_ip))
             hostgroups = list(cursor.fetchall())
             # get user groups that touch this user
             ug_query = "select GroupName from \
