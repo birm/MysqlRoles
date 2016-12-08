@@ -3,42 +3,48 @@ CREATE TABLE user (
   `UserName` char(16) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Plugin` char(64) COLLATE utf8_bin DEFAULT '',
   `Authentication_String` text COLLATE utf8_bin,
-  PRIMARY KEY (`UserName`)
+  PRIMARY KEY (`UserName`),
+  ENGINE=InnoDB
 );
 
 CREATE TABLE host (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Address` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Comments` text COLLATE utf8_bin,
-  PRIMARY KEY (`Name`)
+  PRIMARY KEY (`Name`),
+  ENGINE=InnoDB
 );
 
 CREATE TABLE user_group (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Description` text COLLATE utf8_bin,
-  PRIMARY KEY (`Name`)
+  PRIMARY KEY (`Name`),
+  ENGINE=InnoDB
 );
 
 CREATE TABLE host_group (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Description` text COLLATE utf8_bin,
-  PRIMARY KEY (`Name`)
+  PRIMARY KEY (`Name`),
+  ENGINE=InnoDB
 );
 
 CREATE TABLE host_group_membership (
   `HostName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `GroupName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
-  index `relation_idx` (`HostName`,`GroupName`),
+  PRIMARY KEY (`HostName`,`GroupName`),
   FOREIGN KEY (`HostName`) REFERENCES Host(Name),
-  FOREIGN KEY (`GroupName`) REFERENCES HostGroup(Name)
+  FOREIGN KEY (`GroupName`) REFERENCES HostGroup(Name),
+  ENGINE=InnoDB
 );
 
 CREATE TABLE user_group_membership (
   `UserName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `GroupName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
-  index `relation_idx` (`UserName`,`GroupName`),
+  PRIMARY KEY (`UserName`,`GroupName`),
   FOREIGN KEY (`UserName`) REFERENCES User(UserName),
-  FOREIGN KEY (`GroupName`) REFERENCES UserGroup(Name)
+  FOREIGN KEY (`GroupName`) REFERENCES UserGroup(Name),
+  ENGINE=InnoDB
 );
 
 CREATE TABLE  permission_type (
@@ -72,7 +78,8 @@ CREATE TABLE  permission_type (
   `Event_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
   `Trigger_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
   `Create_tablespace_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`Name`)
+  PRIMARY KEY (`Name`),
+  ENGINE=InnoDB
 );
 
 CREATE TABLE access(
@@ -85,5 +92,6 @@ CREATE TABLE access(
   index `relation_idx` (`UserGroup`,`HostGroup`,`PermissionType`),
   FOREIGN KEY (`UserGroup`) REFERENCES UserGroup(Name),
   FOREIGN KEY (`HostGroup`) REFERENCES HostGroup(Name),
-  FOREIGN KEY (`PermissionType`) REFERENCES PermissionType(Name)
+  FOREIGN KEY (`PermissionType`) REFERENCES PermissionType(Name),
+  ENGINE=InnoDB
 );
