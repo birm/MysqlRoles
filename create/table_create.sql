@@ -3,41 +3,37 @@ CREATE TABLE user (
   `UserName` char(16) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Plugin` char(64) COLLATE utf8_bin DEFAULT '',
   `Authentication_String` text COLLATE utf8_bin,
-  PRIMARY KEY (`UserName`)
-);
+  PRIMARY KEY (`UserName`));
 
 CREATE TABLE host (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Address` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Comments` text COLLATE utf8_bin,
-  PRIMARY KEY (`Name`)
-);
+  PRIMARY KEY (`Name`));
 
 CREATE TABLE user_group (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Description` text COLLATE utf8_bin,
-  PRIMARY KEY (`Name`)
-);
+  PRIMARY KEY (`Name`));
 
 CREATE TABLE host_group (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Description` text COLLATE utf8_bin,
-  PRIMARY KEY (`Name`)
-);
+  PRIMARY KEY (`Name`));
 
 CREATE TABLE host_group_membership (
   `HostName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `GroupName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
-  FOREIGN KEY (`HostName`) REFERENCES Host(Name),
-  FOREIGN KEY (`GroupName`) REFERENCES HostGroup(Name)
-);
+  PRIMARY KEY (`HostName`,`GroupName`),
+  FOREIGN KEY (`HostName`) REFERENCES host(Name),
+  FOREIGN KEY (`GroupName`) REFERENCES host_group(Name));
 
 CREATE TABLE user_group_membership (
   `UserName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `GroupName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
-  FOREIGN KEY (`UserName`) REFERENCES User(UserName),
-  FOREIGN KEY (`GroupName`) REFERENCES UserGroup(Name)
-);
+  PRIMARY KEY (`UserName`,`GroupName`),
+  FOREIGN KEY (`UserName`) REFERENCES user(UserName),
+  FOREIGN KEY (`GroupName`) REFERENCES user_group(Name));
 
 CREATE TABLE  permission_type (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
@@ -70,8 +66,7 @@ CREATE TABLE  permission_type (
   `Event_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
   `Trigger_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
   `Create_tablespace_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`Name`)
-);
+  PRIMARY KEY (`Name`));
 
 CREATE TABLE access(
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
@@ -80,7 +75,7 @@ CREATE TABLE access(
   `PermissionType` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Schema` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   PRIMARY KEY (`Name`),
-  FOREIGN KEY (`UserGroup`) REFERENCES UserGroup(Name),
-  FOREIGN KEY (`HostGroup`) REFERENCES HostGroup(Name),
-  FOREIGN KEY (`PermissionType`) REFERENCES PermissionType(Name)
-);
+  index `relation_idx` (`UserGroup`,`HostGroup`,`PermissionType`),
+  FOREIGN KEY (`UserGroup`) REFERENCES user_group(Name),
+  FOREIGN KEY (`HostGroup`) REFERENCES host_group(Name),
+  FOREIGN KEY (`PermissionType`) REFERENCES permission_type(Name));

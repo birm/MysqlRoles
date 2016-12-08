@@ -31,11 +31,11 @@ insert into host_group (Name) values ("report");
 insert into permission_type (Name, Select_priv, Show_db_priv) values ("read", "Y", "Y");
 insert into permission_type (Name, Select_priv, File_priv, Show_db_priv) values ("readfile", "Y", "Y", "Y");
 insert into permission_type (Name, Select_priv, Insert_priv, Update_priv, Delete_priv, Show_db_priv) values ("readwrite", "Y", "Y", "Y", "Y", "Y");
-insert into permission_type (Name, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv, References_priv, Index_priv, Alter_priv, Show_db_priv) values 
+insert into permission_type (Name, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv, References_priv, Index_priv, Alter_priv, Show_db_priv) values
 ("schemachange", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y");
-insert into permission_type (Name, Lock_tables_priv, Execute_priv, Repl_slave_priv, Repl_client_priv, Create_routine_priv, Alter_routine_priv, Create_user_priv, Event_priv, Trigger_priv, Create_tablespace_priv, Drop_priv, Show_db_priv) values 
-("admin", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y");
-insert into permission_type values ("ALL", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y");
+insert into permission_type (Name, Lock_tables_priv, Execute_priv, Repl_slave_priv, Repl_client_priv, Create_routine_priv, Alter_routine_priv, Create_user_priv, Event_priv, Trigger_priv, Create_tablespace_priv, Drop_priv, Show_db_priv) values
+("admin", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y");
+insert into permission_type values ("ALL", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y");
 
 -- user group memberships
 insert into user_group_membership values ("Alan", "Audit"), ("Danice", "Development"), ("Terry", "Testing"), ("Rachel", "Reporting"), ("Sam", "Admin");
@@ -54,8 +54,8 @@ insert into host_group_membership values ("report", "all"), ("staging", "all"), 
 
 
 -- access grants
-insert into access values ("Audit", "Audit", "all", "read");
-insert into access values ("Development", "Development", "dev_stack", "schemachanges");
-insert into access values ("Testing", "Testing", "dev_stack", "readwrite");
-insert into access values ("Reporting", "Reporting", "all", "readfile");
-insert into access values ("Admin", "Admin", "all", "ALL");
+insert into access values ("Audit", "Audit", "all", "read", "");
+insert into access values ("Development", "Development", "dev_stack", "schemachange", "");
+insert into access values ("Testing", "Testing", "dev_stack", "readwrite", "");
+insert into access values ("Reporting", "Reporting", "all", "readfile", "");
+insert into access values ("Admin", "Admin", "all", "ALL", "");

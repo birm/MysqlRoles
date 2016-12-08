@@ -27,7 +27,7 @@ class RoleManage(object):
                         "Alter_routine_priv", "Create_user_priv",
                         "Event_priv", "Trigger_priv", "Create_tablespace_priv"]
 
-    def __init__(self, client, server="localhost"):
+    def __init__(self, server, client="localhost"):
         """
         Get input and set up connections to be used with contexts (with) later.
 
@@ -103,7 +103,7 @@ class RoleManage(object):
         missing_server = list(set(there_users) -
                               set(should_users) )
         okay_user = list(set(there_users)\
-                         .intersection(should_users)_
+                         .intersection(should_users))
         return [missing_client, missing_server , okay_user]
 
     def user_change(self, name, new_user=False, schema=""):
@@ -233,7 +233,7 @@ class RoleManage(object):
             from permision_type where \
             Name in (%s)"
             cursor.execute(perm_query,
-                           (",".join(permissiontypes))
+                           (",".join(permissiontypes)))
             permissions = list(cursor.fetchall()[0])
             return permissions
 

@@ -5,4 +5,4 @@ def test_roleserv_init():
     rs = RoleServ()
 
 def test_rolemanage_init():
-    rm = RoleManage()
+    rm = RoleManage("localhost")
