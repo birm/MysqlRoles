@@ -7,7 +7,7 @@ def test_missing_overview():
     assert rm.user_check()[0] == 0
 
 def test_a_user():
-        client_con = pymysql.connect(host=self.client,
+        client_con = pymysql.connect(host="localhost",
                                      db='mysql',
                                      autocommit=True)
         with client_con.cursor() as cursor:
