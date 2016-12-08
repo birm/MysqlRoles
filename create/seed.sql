@@ -35,7 +35,7 @@ insert into permission_type (Name, Select_priv, Insert_priv, Update_priv, Delete
 ("schemachange", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y");
 insert into permission_type (Name, Lock_tables_priv, Execute_priv, Repl_slave_priv, Repl_client_priv, Create_routine_priv, Alter_routine_priv, Create_user_priv, Event_priv, Trigger_priv, Create_tablespace_priv, Drop_priv, Show_db_priv) values
 ("admin", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y");
-insert into permission_type values ("ALL", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y");
+insert into permission_type values ("ALL", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y");
 
 -- user group memberships
 insert into user_group_membership values ("Alan", "Audit"), ("Danice", "Development"), ("Terry", "Testing"), ("Rachel", "Reporting"), ("Sam", "Admin");
