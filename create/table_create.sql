@@ -26,16 +26,14 @@ CREATE TABLE host_group_membership (
   `GroupName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   PRIMARY KEY (`HostName`,`GroupName`),
   FOREIGN KEY (`HostName`) REFERENCES host(Name),
-  FOREIGN KEY (`GroupName`) REFERENCES host_group(Name))
-  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  FOREIGN KEY (`GroupName`) REFERENCES host_group(Name));
 
 CREATE TABLE user_group_membership (
   `UserName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `GroupName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   PRIMARY KEY (`UserName`,`GroupName`),
   FOREIGN KEY (`UserName`) REFERENCES user(UserName),
-  FOREIGN KEY (`GroupName`) REFERENCES user_group(Name))
-  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  FOREIGN KEY (`GroupName`) REFERENCES user_group(Name));
 
 CREATE TABLE  permission_type (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
@@ -68,8 +66,7 @@ CREATE TABLE  permission_type (
   `Event_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
   `Trigger_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
   `Create_tablespace_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`Name`))
-  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`Name`));
 
 CREATE TABLE access(
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
@@ -81,5 +78,4 @@ CREATE TABLE access(
   index `relation_idx` (`UserGroup`,`HostGroup`,`PermissionType`),
   FOREIGN KEY (`UserGroup`) REFERENCES user_group(Name),
   FOREIGN KEY (`HostGroup`) REFERENCES host_group(Name),
-  FOREIGN KEY (`PermissionType`) REFERENCES permission_type(Name))
-  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  FOREIGN KEY (`PermissionType`) REFERENCES permission_type(Name));
