@@ -15,5 +15,5 @@ install:
     - travis_retry python setup.py install
 
 script:
-    - py.test MysqlRoles/tests/test_prerun.py
-    - py.test MysqlRoles/tests/test_default_inits.py
+    - py.test MysqlRoles/tests/test_roleserv_fcns.py
+    - py.test MysqlRoles/tests/test_rolemanage_fcns.py
