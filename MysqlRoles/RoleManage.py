@@ -53,8 +53,8 @@ class RoleManage(object):
         self.server = server
         self.client = client
         self.central_con = pymysql.connect(host=self.server,
-                                          db='_MysqlRoles',
-                                          autocommit=True)
+                                           db='_MysqlRoles',
+                                           autocommit=True)
         self.client_con = pymysql.connect(host=self.client,
                                           db='mysql',
                                           autocommit=True)
@@ -86,17 +86,25 @@ class RoleManage(object):
         """
         with self.central_con.cursor() as cursor:
             get_addresses = "select Address from host"
-            cursor.execute(get_users)
+            cursor.execute(get_addresses)
             result = list(cursor.fetchall())
             return result
 
     def user_check(self):
         """
-        Run a check against the host for consistency, reporting differences.
+        Run a check against the host for consistency.
+
+        Reports a list of differences.
+        The first element of the list is
+        a list of users on the server but not client.
+        The second slement of the list is
+        a list of users on the client but not the server.
+        The third element of the list is
+        a list of users present on both the server and the client.
         """
         server = self.client
-        should_users=None
-        there_users=None
+        should_users = None
+        there_users = None
         # get list of users that should be on this host
         with self.central_con.cursor() as cursor:
             should_query = "select distinct(u.UserName) \
@@ -115,30 +123,30 @@ class RoleManage(object):
             cursor.execute(there_query)
             there_users = list(cursor.fetchall())
         missing_client = list(set(should_users) -
-                              set(there_users) )
+                              set(there_users))
         missing_server = list(set(there_users) -
-                              set(should_users) )
-        okay_user = list(set(there_users)\
+                              set(should_users))
+        okay_user = list(set(there_users)
                          .intersection(should_users))
-        return [missing_client, missing_server , okay_user]
+        return [missing_client, missing_server, okay_user]
 
     def user_change(self, name, new_user=False, schema=""):
         """
-        Creates and/or updates a user.
+        Create and/or updates a user.
         """
-        # TODO sanitize name
-        # TODO sanitize schema
+        name = RoleManage.sanitize(name)
+        schema = RoleManage.sanitize(schema)
         with self.client_con.cursor() as cursor:
             # make token for grant statement
-            if schema=="":
-                token="*.*"
+            if schema == "":
+                token = "*.*"
             else:
-                token="{schema}.*".format(schema=schema)
+                token = "{schema}.*".format(schema=schema)
             if new_user:
                 user_stmt = "create user if not exists %s"
                 cursor.execute(user_stmt, (name))
             # May need to check if user exists, even though it should.
-            perm_vals = [x=="Y" for x in self.get_privs(name, schema)]
+            perm_vals = [x == "Y" for x in self.get_privs(name, schema)]
             perm_cols = self.permission_order
             user_priv_stmt = "update user set (%s)"
             for perm, col in zip(perm_vals, perm_cols):
@@ -149,7 +157,8 @@ class RoleManage(object):
 
     def remove_user(self, name):
         """
-        Removes a user from a database.
+        Remove a user from a database.
+
         Returns nothing.
         """
         # TODO sanitize name
@@ -159,9 +168,11 @@ class RoleManage(object):
     def get_schemas(self,user):
         """
         Get a list of schemas that a particular user has special access for.
+
         Returns a list of these schemas.
         """
-        # TODO sanitize user
+        # TODO fix context
+        user = RoleManage.sanitize(user)
         # get host groups that touch this host
         hg_query = "select GroupName from \
         host_group_membership where \
@@ -186,12 +197,13 @@ class RoleManage(object):
     def get_privs(self, user, schema=""):
         """
         Get the privs of the user on the specified host.
+
         Returns a list of "Y" or "N" for each permission.
         Should return an empty list if no results.
         Does not manage schema-specific permissions.
         """
-        # TODO sanitize user
-        # TODO sanitize schema
+        user = RoleManage.sanitize(user)
+        schema = RoleManage.sanitize(schema)
         host = self.client
         with self.central_con.cursor() as cursor:
             # get host groups that touch this host
@@ -263,7 +275,7 @@ class RoleManage(object):
         """
         Set schema-level permissions for users.
         """
-        # TODO sanitize user
+        user = RoleManage.sanitize(user)
         # for each disinct schema touched
         for schema in self.get_schemas(user):
             # get the permissions
