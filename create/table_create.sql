@@ -28,6 +28,7 @@ CREATE TABLE host_group (
 CREATE TABLE host_group_membership (
   `HostName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `GroupName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
+  index `relation_idx` (`HostName`,`GroupName`),
   FOREIGN KEY (`HostName`) REFERENCES Host(Name),
   FOREIGN KEY (`GroupName`) REFERENCES HostGroup(Name)
 );
@@ -35,6 +36,7 @@ CREATE TABLE host_group_membership (
 CREATE TABLE user_group_membership (
   `UserName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `GroupName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
+  index `relation_idx` (`UserName`,`GroupName`),
   FOREIGN KEY (`UserName`) REFERENCES User(UserName),
   FOREIGN KEY (`GroupName`) REFERENCES UserGroup(Name)
 );
@@ -80,6 +82,7 @@ CREATE TABLE access(
   `PermissionType` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Schema` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   PRIMARY KEY (`Name`),
+  index `relation_idx` (`UserGroup`,`HostGroup`,`PermissionType`),
   FOREIGN KEY (`UserGroup`) REFERENCES UserGroup(Name),
   FOREIGN KEY (`HostGroup`) REFERENCES HostGroup(Name),
   FOREIGN KEY (`PermissionType`) REFERENCES PermissionType(Name)
