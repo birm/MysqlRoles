@@ -142,11 +142,12 @@ class RoleManage(object):
             perm_cols = self.permission_order
             for perm, col in zip(perm_vals, perm_cols):
                 if perm:
-                    cursor.execute("grant %s on " + token + " to %s",
-                                   (col, name[0]))
+                    cursor.execute("grant " + col + " on " + token + " to %s",
+                                   (name[0]))
                 else:
-                    cursor.execute("revoke %s on " + token + " from %s",
-                                   (col, name[0]))
+                    cursor.execute("revoke " + col + " on " + token +
+                                   " from %s",
+                                   (name[0]))
 
     def remove_user(self, name):
         """
