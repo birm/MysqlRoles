@@ -38,7 +38,7 @@ class RoleServ(object):
         self.server = server
         tmp_connection = pymysql.connect(host=self.server,
                                           autocommit=True)
-        tmp_connection.cursor.execute("create schema if not exists _MysqlRoles;")
+        tmp_connection.cursor().execute("create schema if not exists _MysqlRoles;")
         self.connection = pymysql.connect(host=self.server,
                                           db='_MysqlRoles',
                                           autocommit=True)
