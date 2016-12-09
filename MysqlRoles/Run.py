@@ -53,7 +53,7 @@ class Run(object):
             else:
                 cent = Run.net_test(args[1])
                 client = Run.net_test(args[2])
-                rm = RoleServ(cent, client)
+                rm = RoleManage(cent, client)
                 rm.update_users()
                 print("updated users on {} from {}".format(client, cent))
                 return 0
