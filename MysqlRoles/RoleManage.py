@@ -135,7 +135,7 @@ class RoleManage(object):
             else:
                 token = "{schema}.*".format(schema=schema)
             if new_user:
-                user_stmt = "create user if not exists %s"
+                user_stmt = "grant usage on *.* to %s"
                 cursor.execute(user_stmt, (name))
             # May need to check if user exists, even though it should.
             perm_vals = [x == "Y" for x in self.get_privs(name, schema)]
