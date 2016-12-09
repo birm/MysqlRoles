@@ -165,7 +165,7 @@ class RoleManage(object):
 
         Returns a list of these schemas.
         """
-        with self.client_con.cursor() as cursor:
+        with self.central_con.cursor() as cursor:
             user = RoleManage.sanitize(user)
             # get host groups that touch this host
             hg_query = "select GroupName from host_group_membership hgm \
