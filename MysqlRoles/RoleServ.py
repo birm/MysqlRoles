@@ -285,7 +285,6 @@ class RoleServ(object):
                                    does not exist.".format(name))
             perm_add_stmt = "update permission_type set " + grant + " =\
              %s where Name = %s limit 1"
-            print perm_add_stmt.format(value, name)
             cursor.execute(perm_add_stmt, (value, name))
 
     def add_access(self, name, usergroup, hostgroup, permission, schema=""):
