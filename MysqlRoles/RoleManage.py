@@ -256,7 +256,7 @@ class RoleManage(object):
             max(Event_priv) ,\
             max(Trigger_priv) ,\
             max(Create_tablespace_priv) \
-            from permision_type where \
+            from permission_type where \
             Name in (%s)"
             cursor.execute(perm_query,
                            (",".join([b[0] for b in permissiontypes])))
