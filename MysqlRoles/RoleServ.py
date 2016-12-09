@@ -176,7 +176,7 @@ class RoleServ(object):
         groupname = RoleServ.sanitize(groupname)
         with self.connection.cursor() as cursor:
             # check if user exists
-            if not cursor.execute("select (1) from user where Name = %s",
+            if not cursor.execute("select (1) from user where UserName = %s",
                                   (username)):
                 # if not, error
                 raise ValueError("User with Name {0}\
