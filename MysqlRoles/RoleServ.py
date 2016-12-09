@@ -283,7 +283,7 @@ class RoleServ(object):
                 # if not, error
                 raise ValueError("Permission type with Name {0}\
                                    does not exist.".format(name))
-            perm_add_stmt = "update host_group_membership set `" + grant + "` =\
+            perm_add_stmt = "update permission_type set `" + grant + "` =\
              %s where Name = %s limit 1"
             cursor.execute(perm_add_stmt, (value, name))
 
