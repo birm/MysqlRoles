@@ -19,4 +19,4 @@ install:
 script:
     - python -m MysqlRoles init 127.0.0.1
     - python -m MysqlRoles seed 127.0.0.1
-    - python -m MysqlRoles update 127.0.0.1
+    - python -m MysqlRoles update 127.0.0.1 127.0.0.1
