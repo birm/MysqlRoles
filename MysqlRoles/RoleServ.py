@@ -13,7 +13,7 @@ class RoleServ(object):
     """
 
     @staticmethod
-    def sanitize(input, allowable_list="[]", default="''"):
+    def sanitize(input, allowable_list=[], default="''"):
         """
         Sanitize inputs to avoid issues with pymysql.
 
@@ -89,7 +89,7 @@ class RoleServ(object):
         # Note that the auth_str default is generated from password('changeme')
         with self.connection.cursor() as cursor:
             # check if user exists
-            if cursor.execute("select (1) from user where Name = %s",
+            if cursor.execute("select (1) from user where UserName = %s",
                               (name)):
                 # if so, error
                 raise RuntimeError("User with username {0}\
@@ -176,7 +176,7 @@ class RoleServ(object):
         groupname = RoleServ.sanitize(groupname)
         with self.connection.cursor() as cursor:
             # check if user exists
-            if not cursor.execute("select (1) from user where Name = %s",
+            if not cursor.execute("select (1) from user where UserName = %s",
                                   (username)):
                 # if not, error
                 raise ValueError("User with Name {0}\
@@ -244,8 +244,8 @@ class RoleServ(object):
         """
         name = RoleServ.sanitize(name)
         # Note that the auth_str default is generated from password('changeme')
-        allyes = ("\"Y\","*29)[:-1]
-        allno = ("\"N\","*29)[:-1]
+        allyes = ('"Y",'*29)[:-1]
+        allno = ('"N",'*29)[:-1]
         if allgrant:
             allperm = allyes
         else:
@@ -257,8 +257,8 @@ class RoleServ(object):
                 # if not, error
                 raise ValueError("Permission type with Name {0}\
                                    already exists.".format(name))
-            ptype_add_stmt = "insert into permission_type values %s , %s"
-            cursor.execute(ptype_add_stmt, (name, allperm))
+            ptype_add_stmt = "insert into permission_type values (%s, " + allperm + ")"
+            cursor.execute(ptype_add_stmt, (name))
 
     def add_permission(self, name, grant, value="Y"):
         """
@@ -283,9 +283,9 @@ class RoleServ(object):
                 # if not, error
                 raise ValueError("Permission type with Name {0}\
                                    does not exist.".format(name))
-            perm_add_stmt = "update host_group_membership  set %s =\
+            perm_add_stmt = "update permission_type set " + grant + " =\
              %s where Name = %s limit 1"
-            cursor.execute(perm_add_stmt, (grant, value, name))
+            cursor.execute(perm_add_stmt, (value, name))
 
     def add_access(self, name, usergroup, hostgroup, permission, schema=""):
         """
@@ -305,7 +305,7 @@ class RoleServ(object):
         name = RoleServ.sanitize(name)
         usergroup = RoleServ.sanitize(usergroup)
         hostgroup = RoleServ.sanitize(hostgroup)
-        permission = RoleServ.sanitize(permision)
+        permission = RoleServ.sanitize(permission)
         schema = RoleServ.sanitize(schema)
         with self.connection.cursor() as cursor:
             # check if grant exists by name
@@ -317,7 +317,7 @@ class RoleServ(object):
             # check if grant exists by function
             if cursor.execute("select (1) from access where UserGroup = %s\
                               and HostGroup = %s",
-                              (usergroup, hosrgroup)):
+                              (usergroup, hostgroup)):
                 # if so, error
                 raise RuntimeError("Access for {0} to {1} already\
                                    exists.".format(usergroup, hostgroup))
