@@ -89,7 +89,7 @@ class RoleServ(object):
         # Note that the auth_str default is generated from password('changeme')
         with self.connection.cursor() as cursor:
             # check if user exists
-            if cursor.execute("select (1) from user where Name = %s",
+            if cursor.execute("select (1) from user where UserName = %s",
                               (name)):
                 # if so, error
                 raise RuntimeError("User with username {0}\
