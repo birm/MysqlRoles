@@ -180,9 +180,9 @@ class RoleManage(object):
             cursor.execute(ug_query, (user))
             usergroups = list(cursor.fetchall())
             # find all access that maps them
-            ug_query = "select distinct(Schema) from \
+            ug_query = "select distinct(`Schema`) from \
             access where UserGroup in (%s) and \
-            HostGroup in (%s) and Schema<>''"
+            HostGroup in (%s) and `Schema`<>''"
             cursor.execute(ug_query,
                            (",".join([b[0] for b in usergroups]),
                             ",".join([h[0] for h in hostgroups])))
