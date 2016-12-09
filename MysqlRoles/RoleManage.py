@@ -143,10 +143,10 @@ class RoleManage(object):
             for perm, col in zip(perm_vals, perm_cols):
                 if perm:
                     cursor.execute("grant %s on " + token + " to %s",
-                                   (col, token, name[0]))
+                                   (col, name[0]))
                 else:
                     cursor.execute("revoke %s on " + token + " from %s",
-                                   (col, token, name))
+                                   (col, name[0]))
 
     def remove_user(self, name):
         """
