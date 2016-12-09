@@ -142,7 +142,8 @@ class RoleManage(object):
             perm_cols = self.permission_order
             for perm, col in zip(perm_vals, perm_cols):
                 if perm:
-                    cursor.execute("grant %s on %s to %s", (col, token, name))
+                    cursor.execute("grant %s on %s to %s",
+                                   (col, token, name[0]))
                 else:
                     cursor.execute("revoke %s on %s from %s",
                                    (col, token, name))
