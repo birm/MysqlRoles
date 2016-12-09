@@ -1,3 +1,6 @@
+create schema if not exists _MysqlRoles;
+use _MysqlRoles;
+
 CREATE TABLE user (
   `FromHost` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `UserName` char(16) COLLATE utf8_bin NOT NULL DEFAULT '',
