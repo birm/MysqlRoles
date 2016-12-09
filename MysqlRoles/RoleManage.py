@@ -182,8 +182,8 @@ class RoleManage(object):
             access where UserGroup in (%s) and \
             HostGroup in (%s) and Schema<>''"
             cursor.execute(ug_query,
-                           (",".join(usergroups),
-                            ",".join(hostgroups)))
+                           (",".join([b[0] for b in usergroups]),
+                            ",".join([h[0] for h in hostgroups])))
             return list(cursor.fetchall())
 
     def get_privs(self, user, schema=""):
@@ -220,8 +220,8 @@ class RoleManage(object):
                 HostGroup in (%s) and \
                 Schema='{schema}'".format(schema=schema)
             cursor.execute(ug_query,
-                           (",".join(usergroups),
-                            ",".join(hostgroups)))
+                           (",".join([b[0] for b in usergroups]),
+                            ",".join([b[0] for b in hostgroups])))
             permissiontypes = list(cursor.fetchall())
             # logical or for each permission
             # return a list for each permission in order
@@ -258,7 +258,7 @@ class RoleManage(object):
             from permision_type where \
             Name in (%s)"
             cursor.execute(perm_query,
-                           (",".join(permissiontypes)))
+                           (",".join([b[0] for b in permissiontypes])))
             permissions = list(cursor.fetchall()[0])
             return permissions
 
