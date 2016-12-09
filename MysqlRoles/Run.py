@@ -34,7 +34,7 @@ class Run(object):
                 cent = Run.net_test(args[1])
                 rs = RoleServ(cent)
                 rs.create_tables()
-                print "created tables on {0}".format(cent)
+                print "created tables on %s".format(cent)
                 return 0
         elif args[0].lower() == "seed":
             if len(args) != 2:
@@ -44,7 +44,7 @@ class Run(object):
                 cent = Run.net_test(args[1])
                 rs = RoleServ(cent)
                 rs.test_seed_tables()
-                print "test seeded on {0}".format(cent)
+                print "test seeded on %s".format(cent)
                 return 0
         elif args[0].lower() == "update":
             if len(args) != 3:
@@ -55,7 +55,7 @@ class Run(object):
                 client = Run.net_test(args[2])
                 rm = RoleServ(cent, client)
                 rm.update_users()
-                print "updated users on {0} from {1}".format(client, cent)
+                print "updated users on %s from %s".format(client, cent)
                 return 0
         else:
             print(helpstr)
