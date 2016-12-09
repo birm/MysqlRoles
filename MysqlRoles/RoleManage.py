@@ -213,7 +213,7 @@ class RoleManage(object):
             if schema == "":
                 ug_query = "select PermissionType from \
                 access where UserGroup in (%s) and \
-                HostGroup in (%s) and Schema=''"
+                HostGroup in (%s) and Schema=%s"
             else:
                 ug_query = "select PermissionType from \
                 access where UserGroup in (%s) and \
