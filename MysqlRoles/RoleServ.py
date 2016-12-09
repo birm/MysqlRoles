@@ -344,9 +344,3 @@ class RoleServ(object):
             ag_add_stmt = "insert into access values (%s, %s, %s, %s, %s)"
             cursor.execute(ag_add_stmt, (name, usergroup, hostgroup,
                                          permission, schema))
-
-    def cli(self):
-        """
-        Interact with command line.
-        """
-        pass
