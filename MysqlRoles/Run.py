@@ -6,7 +6,7 @@ import pymysql
 class Run(object):
 
     @staticmethod
-    def parse(self, args):
+    def parse(args):
         """
         Parse arguments given to CLI into commands to run.
         """
@@ -62,7 +62,7 @@ class Run(object):
             return 1
 
     @staticmethod
-    def net_test(self, host):
+    def net_test(host):
         """
         Determine if a host is accessible before doing anything.
 
