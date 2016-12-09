@@ -2,7 +2,7 @@ from MysqlRoles import RoleManage
 import pymysql
 
 def test_missing_overview():
-    rm = RoleManage("localhost")
+    rm = RoleManage("127.0.0.1")
     # check none missed
     assert rm.user_check()[0] == 0
 

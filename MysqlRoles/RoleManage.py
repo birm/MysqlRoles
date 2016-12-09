@@ -13,7 +13,7 @@ class RoleManage(object):
 
         Input:
             client: Address of server to make match the source of truth
-            server: Address of source of Truth server (default: localhost)
+            server: Address of source of Truth server (default: 127.0.0.1)
     """
 
     # we need permission names by order
@@ -45,7 +45,7 @@ class RoleManage(object):
         else:
             return default
 
-    def __init__(self, server, client="localhost"):
+    def __init__(self, server, client="127.0.0.1"):
         """
         Get input and set up connections to be used with contexts (with) later.
 

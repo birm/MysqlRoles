@@ -9,7 +9,7 @@ class RoleServ(object):
         This class should only manage the server.
 
         Input:
-            serv: Address of source of Truth server (default: localhost)
+            serv: Address of source of Truth server (default: 127.0.0.1)
     """
 
     @staticmethod
@@ -28,7 +28,7 @@ class RoleServ(object):
         else:
             return default
 
-    def __init__(self, server="localhost"):
+    def __init__(self, server="127.0.0.1"):
         """
         Get input and set up connection to be used with contexts (with) later.
 
