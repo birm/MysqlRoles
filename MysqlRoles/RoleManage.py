@@ -211,10 +211,9 @@ class RoleManage(object):
             usergroups = list(cursor.fetchall())
             # find all access that maps them
             if schema == "":
-                schema = None
                 ug_query = "select PermissionType from \
                 access where UserGroup in (%s) and \
-                HostGroup in (%s) and Schema=''#%s"
+                HostGroup in (%s) and Schema='' or %s ='impossible'"
             else:
                 ug_query = "select PermissionType from \
                 access where UserGroup in (%s) and \
