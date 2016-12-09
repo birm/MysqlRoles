@@ -13,7 +13,7 @@ class RoleServ(object):
     """
 
     @staticmethod
-    def sanitize(input, allowable_list="[]", default="''"):
+    def sanitize(input, allowable_list=[], default="''"):
         """
         Sanitize inputs to avoid issues with pymysql.
 
