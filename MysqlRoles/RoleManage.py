@@ -292,9 +292,3 @@ class RoleManage(object):
             # remove users on client but not server
             for rem_usr in users[1]:
                 self.remove_user(rem_usr)
-
-    def cli(self):
-        """
-        Interact with command line.
-        """
-        pass
