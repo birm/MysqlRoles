@@ -1,44 +1,44 @@
 create schema if not exists _MysqlRoles;
 use _MysqlRoles;
 
-CREATE TABLE user (
+CREATE TABLE IF NOT EXISTS user (
   `FromHost` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `UserName` char(16) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Plugin` char(64) COLLATE utf8_bin DEFAULT '',
   `Authentication_String` text COLLATE utf8_bin,
   PRIMARY KEY (`UserName`));
 
-CREATE TABLE host (
+CREATE TABLE IF NOT EXISTS host (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Address` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Comments` text COLLATE utf8_bin,
   PRIMARY KEY (`Name`));
 
-CREATE TABLE user_group (
+CREATE TABLE IF NOT EXISTS user_group (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Description` text COLLATE utf8_bin,
   PRIMARY KEY (`Name`));
 
-CREATE TABLE host_group (
+CREATE TABLE IF NOT EXISTS host_group (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Description` text COLLATE utf8_bin,
   PRIMARY KEY (`Name`));
 
-CREATE TABLE host_group_membership (
+CREATE TABLE IF NOT EXISTS host_group_membership (
   `HostName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `GroupName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   PRIMARY KEY (`HostName`,`GroupName`),
   FOREIGN KEY (`HostName`) REFERENCES host(Name),
   FOREIGN KEY (`GroupName`) REFERENCES host_group(Name));
 
-CREATE TABLE user_group_membership (
+CREATE TABLE IF NOT EXISTS user_group_membership (
   `UserName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `GroupName` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   PRIMARY KEY (`UserName`,`GroupName`),
   FOREIGN KEY (`UserName`) REFERENCES user(UserName),
   FOREIGN KEY (`GroupName`) REFERENCES user_group(Name));
 
-CREATE TABLE  permission_type (
+CREATE TABLE IF NOT EXISTS permission_type (
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `Select_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
   `Insert_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
@@ -71,7 +71,7 @@ CREATE TABLE  permission_type (
   `Create_tablespace_priv` enum('N','Y') CHARACTER SET utf8 NOT NULL DEFAULT 'N',
   PRIMARY KEY (`Name`));
 
-CREATE TABLE access(
+CREATE TABLE IF NOT EXISTS access(
   `Name` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `UserGroup` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `HostGroup` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
