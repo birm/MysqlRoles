@@ -318,7 +318,7 @@ class RoleServ(object):
             # check if grant exists by function
             if cursor.execute("select (1) from access where UserGroup = %s\
                               and HostGroup = %s",
-                              (usergroup, hosrgroup)):
+                              (usergroup, hostgroup)):
                 # if so, error
                 raise RuntimeError("Access for {0} to {1} already\
                                    exists.".format(usergroup, hostgroup))
