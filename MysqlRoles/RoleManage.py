@@ -221,8 +221,8 @@ class RoleManage(object):
                 Schema=%s"
             cursor.execute(ug_query,
                            (",".join([b[0] for b in usergroups]),
-                            ",".join([b[0] for b in hostgroups])),
-                           schema)
+                            ",".join([b[0] for b in hostgroups]),
+                            schema))
             permissiontypes = list(cursor.fetchall())
             # logical or for each permission
             # return a list for each permission in order
