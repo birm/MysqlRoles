@@ -244,8 +244,8 @@ class RoleServ(object):
         """
         name = RoleServ.sanitize(name)
         # Note that the auth_str default is generated from password('changeme')
-        allyes = ("\"Y\","*29)[:-1]
-        allno = ("\"N\","*29)[:-1]
+        allyes = ('"Y",'*29)[:-1]
+        allno = ('"N",'*29)[:-1]
         if allgrant:
             allperm = allyes
         else:
@@ -257,8 +257,8 @@ class RoleServ(object):
                 # if not, error
                 raise ValueError("Permission type with Name {0}\
                                    already exists.".format(name))
-            ptype_add_stmt = "insert into permission_type values %s , %s"
-            cursor.execute(ptype_add_stmt, (name, allperm))
+            ptype_add_stmt = "insert into permission_type values %s, "+ allperm
+            cursor.execute(ptype_add_stmt, (name))
 
     def add_permission(self, name, grant, value="Y"):
         """
