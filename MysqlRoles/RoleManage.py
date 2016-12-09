@@ -1,4 +1,5 @@
 import pymysql
+import socket
 
 
 class RoleManage(object):
@@ -12,21 +13,21 @@ class RoleManage(object):
 
         Input:
             client: Address of server to make match the source of truth
-            server: Address of source of Truth server (default: localhost)
+            server: Address of source of Truth server (default: 127.0.0.1)
     """
 
     # we need permission names by order
-    permission_order = ["Select_priv", "Insert_priv", "Update_priv",
-                        "Delete_priv", "Create_priv", "Drop_priv",
-                        "Reload_priv", "Shutdown_priv", "Process_priv",
-                        "File_priv", "Grant_priv", "References_priv",
-                        "Index_priv", "Alter_priv", "Super_priv",
-                        "Create_tmp_table_priv", "Lock_tables_priv",
-                        "Execute_priv", "Repl_slave_priv",
-                        "Repl_client_priv", "Create_view_priv",
-                        "Show_view_priv", "Create_routine_priv",
-                        "Alter_routine_priv", "Create_user_priv",
-                        "Event_priv", "Trigger_priv", "Create_tablespace_priv"]
+    permission_order = ["Select", "Insert", "Update",
+                        "Delete", "Create", "Drop",
+                        "Reload", "Shutdown", "Process",
+                        "File", "Grant Option", "References",
+                        "Index", "Alter", "Super",
+                        "CREATE TEMPORARY TABLES", "Lock tables",
+                        "Execute", "Replication slave",
+                        "Replication client", "Create view",
+                        "Show view", "Create routine",
+                        "Alter routine", "Create user",
+                        "Event", "Trigger", "Create tablespace"]
 
     @staticmethod
     def sanitize(input, allowable_list=[], default="''"):
@@ -44,7 +45,7 @@ class RoleManage(object):
         else:
             return default
 
-    def __init__(self, server, client="localhost"):
+    def __init__(self, server, client="127.0.0.1"):
         """
         Get input and set up connections to be used with contexts (with) later.
 
@@ -53,6 +54,8 @@ class RoleManage(object):
         """
         self.server = server
         self.client = client
+        self.server_ip = socket.gethostbyname(server)
+        self.client_ip = socket.gethostbyname(client)
         self.central_con = pymysql.connect(host=self.server,
                                            db='_MysqlRoles',
                                            autocommit=True)
@@ -91,7 +94,6 @@ class RoleManage(object):
         The third element of the list is
         a list of users present on both the server and the client.
         """
-        server = self.client
         should_users = None
         there_users = None
         # get list of users that should be on this host
@@ -101,9 +103,9 @@ class RoleManage(object):
             user_group_membership as ug on u.UserName=ug.UserName \
             join access a on a.UserGroup=ug.GroupName inner join \
             host_group_membership as hg on \
-            hg.HostName=a.HostGroup \
-            where hg.HostName=%s"
-            cursor.execute(should_query, (server))
+            hg.HostName=a.HostGroup join host h on h.Name=hg.HostName \
+            where hg.HostName=%s or h.Address=%s"
+            cursor.execute(should_query, (self.client, self.client_ip))
             should_users = list(cursor.fetchall())
         # get list of users actually on the host
         with self.client_con.cursor() as cursor:
@@ -133,17 +135,19 @@ class RoleManage(object):
             else:
                 token = "{schema}.*".format(schema=schema)
             if new_user:
-                user_stmt = "create user if not exists %s"
+                user_stmt = "grant usage on *.* to %s"
                 cursor.execute(user_stmt, (name))
             # May need to check if user exists, even though it should.
             perm_vals = [x == "Y" for x in self.get_privs(name, schema)]
             perm_cols = self.permission_order
             for perm, col in zip(perm_vals, perm_cols):
                 if perm:
-                    cursor.execute("grant %s on %s to %s", (col, token, name))
+                    cursor.execute("grant " + col + " on " + token + " to %s",
+                                   (name[0]))
                 else:
-                    cursor.execute("revoke %s on %s from %s",
-                                   (col, token, name))
+                    cursor.execute("revoke " + col + " on " + token +
+                                   " from %s",
+                                   (name[0]))
 
     def remove_user(self, name):
         """
@@ -161,13 +165,13 @@ class RoleManage(object):
 
         Returns a list of these schemas.
         """
-        with self.client_con.cursor() as cursor:
+        with self.central_con.cursor() as cursor:
             user = RoleManage.sanitize(user)
             # get host groups that touch this host
-            hg_query = "select GroupName from \
-            host_group_membership where \
-            HostName=%s"
-            cursor.execute(hg_query, (self.client))
+            hg_query = "select GroupName from host_group_membership hgm \
+            join host h on hgm.Hostname=h.name where \
+            h.name = %s or h.Address=%s"
+            cursor.execute(hg_query, (self.client, self.client_ip))
             hostgroups = list(cursor.fetchall())
             # get user groups that touch this user
             ug_query = "select GroupName from \
@@ -176,12 +180,12 @@ class RoleManage(object):
             cursor.execute(ug_query, (user))
             usergroups = list(cursor.fetchall())
             # find all access that maps them
-            ug_query = "select distinct(Schema) from \
+            ug_query = "select distinct(`Schema`) from \
             access where UserGroup in (%s) and \
-            HostGroup in (%s) and Schema<>''"
+            HostGroup in (%s) and `Schema`<>''"
             cursor.execute(ug_query,
-                           (",".join(usergroups),
-                            ",".join(hostgroups)))
+                           (",".join([b[0] for b in usergroups]),
+                            ",".join([h[0] for h in hostgroups])))
             return list(cursor.fetchall())
 
     def get_privs(self, user, schema=""):
@@ -194,13 +198,12 @@ class RoleManage(object):
         """
         user = RoleManage.sanitize(user)
         schema = RoleManage.sanitize(schema)
-        host = self.client
         with self.central_con.cursor() as cursor:
             # get host groups that touch this host
-            hg_query = "select GroupName from \
-            host_group_membership where \
-            HostName=%s"
-            cursor.execute(hg_query, (host))
+            hg_query = "select GroupName from host_group_membership hgm \
+            join host h on hgm.Hostname=h.name where \
+            h.name = %s or h.Address=%s"
+            cursor.execute(hg_query, (self.client, self.client_ip))
             hostgroups = list(cursor.fetchall())
             # get user groups that touch this user
             ug_query = "select GroupName from \
@@ -212,15 +215,16 @@ class RoleManage(object):
             if schema == "":
                 ug_query = "select PermissionType from \
                 access where UserGroup in (%s) and \
-                HostGroup in (%s) and Schema=''"
+                HostGroup in (%s) and `Schema`='' or %s='impossible'"
             else:
                 ug_query = "select PermissionType from \
                 access where UserGroup in (%s) and \
                 HostGroup in (%s) and \
-                Schema='{schema}'".format(schema=schema)
+                `Schema`=%s"
             cursor.execute(ug_query,
-                           (",".join(usergroups),
-                            ",".join(hostgroups)))
+                           (",".join([b[0] for b in usergroups]),
+                            ",".join([b[0] for b in hostgroups]),
+                            schema))
             permissiontypes = list(cursor.fetchall())
             # logical or for each permission
             # return a list for each permission in order
@@ -254,10 +258,10 @@ class RoleManage(object):
             max(Event_priv) ,\
             max(Trigger_priv) ,\
             max(Create_tablespace_priv) \
-            from permision_type where \
+            from permission_type where \
             Name in (%s)"
             cursor.execute(perm_query,
-                           (",".join(permissiontypes)))
+                           (",".join([b[0] for b in permissiontypes])))
             permissions = list(cursor.fetchall()[0])
             return permissions
 

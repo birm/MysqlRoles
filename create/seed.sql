@@ -12,6 +12,7 @@ insert into host values ("testing", "testing", "main testing host");
 insert into host values ("cert", "cert", "main cert host");
 insert into host values ("prod", "prod", "main prod host");
 insert into host values ("ops", "ops", "main ops host");
+insert into host values ("localhost", "127.0.0.1", "this server");
 
 -- user groups
 insert into user_group (Name) values ("Audit");
@@ -26,6 +27,7 @@ insert into host_group (Name) values ("dev_stack");
 insert into host_group (Name) values ("preprod");
 insert into host_group (Name) values ("prod");
 insert into host_group (Name) values ("report");
+insert into host_group (Name) values ("localhost");
 
 -- permission types
 insert into permission_type (Name, Select_priv, Show_db_priv) values ("read", "Y", "Y");
@@ -51,6 +53,8 @@ insert into host_group_membership values ("prod", "prod");
 insert into host_group_membership values ("report", "report"), ("ops", "report");
 -- -- all
 insert into host_group_membership values ("report", "all"), ("staging", "all"), ("testing", "all"), ("cert", "all"), ("prod", "all"), ("ops", "all");
+-- -- localhost
+insert into host_group_membership values ("localhost", "localhost");
 
 
 -- access grants
@@ -59,3 +63,4 @@ insert into access values ("Development", "Development", "dev_stack", "schemacha
 insert into access values ("Testing", "Testing", "dev_stack", "readwrite", "");
 insert into access values ("Reporting", "Reporting", "all", "readfile", "");
 insert into access values ("Admin", "Admin", "all", "ALL", "");
+insert into access values ("Testing_localhost", "Testing", "localhost", "readwrite", "");
