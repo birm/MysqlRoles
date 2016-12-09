@@ -218,10 +218,11 @@ class RoleManage(object):
                 ug_query = "select PermissionType from \
                 access where UserGroup in (%s) and \
                 HostGroup in (%s) and \
-                Schema={schema}".format(schema=schema)
+                Schema=%s"
             cursor.execute(ug_query,
                            (",".join([b[0] for b in usergroups]),
-                            ",".join([b[0] for b in hostgroups])))
+                            ",".join([b[0] for b in hostgroups])),
+                           schema)
             permissiontypes = list(cursor.fetchall())
             # logical or for each permission
             # return a list for each permission in order
