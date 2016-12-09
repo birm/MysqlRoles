@@ -17,6 +17,13 @@ install:
     - travis_retry python setup.py install
 
 script:
+    # CLI Tests
     - python -m MysqlRoles init 127.0.0.1
     - python -m MysqlRoles seed 127.0.0.1
     - python -m MysqlRoles update 127.0.0.1 127.0.0.1
+    # Reset Database
+    - mysql -u root -e 'DROP DATABASE _MysqlRoles;'
+    - mysql -u root -e 'CREATE DATABASE _MysqlRoles;'
+    # function tests
+    - py.test MysqlRoles/tests/test_roleserv_fcns.py
+    - py.test MysqlRoles/tests/test_rolemanage_fcns.py
