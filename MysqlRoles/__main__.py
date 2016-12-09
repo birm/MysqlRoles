@@ -12,7 +12,7 @@ if __name__ == "__main__":
     update (address/name for central server) (address/name for host)
         updates the host as requested."""
     if len(sys.argv)<2:
-        print helpstr
+        print(helpstr)
         return 1
     s = r.parse(sys.argv[1:])
     return 0
