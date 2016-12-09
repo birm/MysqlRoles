@@ -305,7 +305,7 @@ class RoleServ(object):
         name = RoleServ.sanitize(name)
         usergroup = RoleServ.sanitize(usergroup)
         hostgroup = RoleServ.sanitize(hostgroup)
-        permission = RoleServ.sanitize(permision)
+        permission = RoleServ.sanitize(permission)
         schema = RoleServ.sanitize(schema)
         with self.connection.cursor() as cursor:
             # check if grant exists by name
