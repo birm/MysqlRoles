@@ -13,6 +13,5 @@ if __name__ == "__main__":
         updates the host as requested."""
     if len(sys.argv)<2:
         print(helpstr)
-        return 1
-    s = r.parse(sys.argv[1:])
-    return 0
+    else:
+        s = r.parse(sys.argv[1:])
