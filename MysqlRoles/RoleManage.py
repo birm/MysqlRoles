@@ -213,12 +213,12 @@ class RoleManage(object):
             if schema == "":
                 ug_query = "select PermissionType from \
                 access where UserGroup in (%s) and \
-                HostGroup in (%s) and Schema='' or %s ='impossible'"
+                HostGroup in (%s) and `Schema`='' or %s='impossible'"
             else:
                 ug_query = "select PermissionType from \
                 access where UserGroup in (%s) and \
                 HostGroup in (%s) and \
-                Schema=%s"
+                `Schema`=%s"
             cursor.execute(ug_query,
                            (",".join([b[0] for b in usergroups]),
                             ",".join([b[0] for b in hostgroups]),
