@@ -36,6 +36,9 @@ class RoleServ(object):
         No special input validation.
         """
         self.server = server
+        tmp_connection = pymysql.connect(host=self.server,
+                                          autocommit=True)
+        tmp_connection.cursor.execute("create schema if not exists _MysqlRoles;")
         self.connection = pymysql.connect(host=self.server,
                                           db='_MysqlRoles',
                                           autocommit=True)
