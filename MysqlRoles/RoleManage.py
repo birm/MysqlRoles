@@ -22,7 +22,7 @@ class RoleManage(object):
                         "Reload", "Shutdown", "Process",
                         "File", "Grant Option", "References",
                         "Index", "Alter", "Super",
-                        "Create temp table", "Lock tables",
+                        "CREATE TEMPORARY TABLES", "Lock tables",
                         "Execute", "Replication slave",
                         "Replication client", "Create view",
                         "Show view", "Create routine",
