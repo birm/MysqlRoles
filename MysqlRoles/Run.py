@@ -27,32 +27,41 @@ class Run(object):
             print(helpstr)
             return 1
         elif args[0].lower() == "init":
-            if len(args) != 2:
-                print("init expects a hostname for a central server to init")
+            if len(args) not in (1,2):
+                print("init expects 0 or 1 additional arguments, try running help")
                 return 1
             else:
-                cent = Run.net_test(args[1])
+                if len(args)==1:
+                    cent = Run.net_test("localhost")
+                else:
+                    cent = Run.net_test(args[1])
                 rs = RoleServ(cent)
                 rs.create_tables()
                 print("created tables on {}".format(cent))
                 return 0
         elif args[0].lower() == "seed":
-            if len(args) != 2:
-                print("seed expects a hostname for a central server to seed")
+            if len(args) not in (1,2):
+                print("seed expects 0 or 1 additional arguments, try running help")
                 return 1
             else:
-                cent = Run.net_test(args[1])
+                if len(args)==1:
+                    cent = Run.net_test("localhost")
+                else:
+                    cent = Run.net_test(args[1])
                 rs = RoleServ(cent)
                 rs.test_seed_tables()
                 print("test seeded on {}".format(cent))
                 return 0
         elif args[0].lower() == "update":
-            if len(args) != 3:
-                print("init expects a hostname for a central server to reference and a client to update")
+            if len(args) not in (2,3):
+                print("update expects 1 or 2 additional arguments, try running help")
                 return 1
             else:
                 cent = Run.net_test(args[1])
-                client = Run.net_test(args[2])
+                if len(args)==1:
+                    client = Run.net_test("localhost")
+                else:
+                    client = Run.net_test(args[2])
                 rm = RoleManage(cent, client)
                 rm.update_users()
                 print("updated users on {} from {}".format(client, cent))
