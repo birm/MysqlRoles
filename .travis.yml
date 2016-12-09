@@ -8,8 +8,8 @@ services:
 
 before_install:
   - mysql -u root -e 'CREATE DATABASE _MysqlRoles;'
-  - mysql -u root -e "grant all on *.* to 'travis'@'127.0.0.1';"
-  - mysql -u root -e "grant all on *.* to 'travis'@'localhost';"
+  - mysql -u root -e "grant all on *.* to 'travis'@'127.0.0.1' with grant option;"
+  - mysql -u root -e "grant all on *.* to 'travis'@'localhost' with grant option;"
 
 install:
     - pip install pytest pytest-cov
