@@ -49,13 +49,25 @@ class RoleManage(object):
         """
         Get input and set up connections to be used with contexts (with) later.
 
+        Try as hard as possible to get a non-localhost IP.
         Standard dunder/magic method; returns nothing special.
         No special input validation.
         """
         self.server = server
         self.client = client
+        # since this needs a hostname or an address to match,
+        # local ips/names mess it up. Resolve them properly.
+        if self.client in ("127.0.0.1", "localhost", "::1"):
+            self.client = socket.gethostname()
+            self.client_ip = socket.gethostbyname(self.client)
+            # take first name from result of fqdn
+            self.client=self.client.split(".")[0]
+        else:
+            self.client_ip = socket.gethostbyname(client)
         self.server_ip = socket.gethostbyname(server)
-        self.client_ip = socket.gethostbyname(client)
+        # assure that no local ip is given so this can run locally.
+        if self.client_ip in ("127.0.0.1", "localhost", "::1"):
+            self.client_ip = socket.gethostbyname(socket.gethostname())
         self.central_con = pymysql.connect(host=self.server,
                                            db='_MysqlRoles',
                                            autocommit=True)
