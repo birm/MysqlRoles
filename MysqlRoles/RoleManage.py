@@ -168,6 +168,21 @@ class RoleManage(object):
             if new_user:
                 user_stmt = "grant usage on *.* to %s"
                 cursor.execute(user_stmt, (name))
+            # Ensure authentication is most recent
+            with self.central_con.cursor() as cursor:
+                # get plugin
+                plugin_stmt = "select Plugin from user where\
+                name=%s;"
+                cursor.execute(plugin_stmt, (name))
+                plugin = cursor.fetchone()
+                # get auth string
+                astr_stmt = "select Authentication_String \
+                from user where name=%s;"
+                cursor.execute(astr_stmt, (name))
+                authstr = cursor.fetchone()
+            # update the user on the client
+            auth_stmt = "alter user if exists %s identified with %s by %s"
+            cursor.execute(auth_stmt, (name, plugin, authstr))
             # May need to check if user exists, even though it should.
             perm_vals = [x == "Y" for x in self.get_privs(name, schema)]
             perm_cols = self.permission_order
@@ -293,7 +308,7 @@ class RoleManage(object):
             Name in (%s)"
             cursor.execute(perm_query,
                            (",".join([b[0] for b in permissiontypes])))
-            permissions = list(cursor.fetchall()[0])
+            permissions = list(cursor.fetchone())
             return permissions
 
     def schema_privs(self, user):
