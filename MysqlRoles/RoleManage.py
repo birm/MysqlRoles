@@ -5,7 +5,7 @@ import socket
 class RoleManage(object):
 
     """
-    RolePush.
+    RoleManage.
 
         Functions to, from a source of truth, check a DB and make
         the mysql user table match.
