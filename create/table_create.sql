@@ -5,7 +5,7 @@ create table if not exists log_action (
   `client` COLLATE utf8_bin NOT NULL DEFAULT '',
   `host` COLLATE utf8_bin NOT NULL DEFAULT '',
   `time` timestamp default CURRENT_TIMESTAMP,
-  `content` LONGTEXT
+  `content` LONGTEXT,
   PRIMARY KEY (`time`));
 
 CREATE TABLE IF NOT EXISTS user (
