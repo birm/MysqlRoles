@@ -1,6 +1,9 @@
 # MysqlRoles
 Role Based Access Control (RBAC) for mysql
 
+## Documentation
+See http://www.rbirm.us/MysqlRoles/
+
 ## How this is used
 There are two parts to this application:
 * RoleManage
