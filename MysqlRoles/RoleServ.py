@@ -1,4 +1,5 @@
 import pymysql
+import os
 
 class RoleServ(object):
 
@@ -58,7 +59,10 @@ class RoleServ(object):
         Returns nothing.
         """
         with self.connection.cursor() as cursor:
-            create_stmt = open('create/table_create.sql', 'r').read()
+            # allow for relative paths
+            create_file = os.path.join(os.path.dirname(__file__),
+                                       '../create/table_create.sql')
+            create_stmt = open(create_file, 'r').read()
             cursor.execute(create_stmt)
 
     def test_seed_tables(self):
@@ -69,7 +73,9 @@ class RoleServ(object):
         """
         # TODO check if tables exist first
         with self.connection.cursor() as cursor:
-            seed_table_stmt = open('create/seed.sql', 'r').read()
+            seed_file = os.path.join(os.path.dirname(__file__),
+                                     '../create/seed.sql')
+            seed_table_stmt = open(seed_file, 'r').read()
             cursor.execute(seed_table_stmt)
 
     """
