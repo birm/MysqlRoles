@@ -67,7 +67,7 @@ class RoleManage(object):
             self.client_ip = socket.gethostbyname(client)
         self.server_ip = socket.gethostbyname(server)
         # assure that no local ip is given so this can run locally.
-        cnf_file=os.path.expanduser('~/.my.cnf')
+        cnf_file = os.path.expanduser('~/.my.cnf')
         if self.client_ip in ("127.0.0.1", "localhost", "::1"):
             self.client_ip = socket.gethostbyname(socket.gethostname())
         self.central_con = pymysql.connect(host=self.server,
@@ -146,7 +146,7 @@ class RoleManage(object):
         as well as users not found on the central server.
         """
         output = "Added users: {}".format(str(usr_list[0]))
-        output = output + "\n\nUnmatched Users: %s".format(str(usr_list[1]))
+        output = output + "\n\nUnmatched Users: {}".format(str(usr_list[1]))
         with self.central_con.cursor() as cursor:
             cursor.execute(
                 "insert into log_action (client, host, content) values (%s, %s, %s)",
