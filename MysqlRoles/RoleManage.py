@@ -67,7 +67,7 @@ class RoleManage(object):
             self.client_ip = socket.gethostbyname(client)
         self.server_ip = socket.gethostbyname(server)
         # assure that no local ip is given so this can run locally.
-        cnf_file=os.path.expanduser('~/.my.cnf')
+        cnf_file = os.path.expanduser('~/.my.cnf')
         if self.client_ip in ("127.0.0.1", "localhost", "::1"):
             self.client_ip = socket.gethostbyname(socket.gethostname())
         self.central_con = pymysql.connect(host=self.server,
@@ -146,7 +146,7 @@ class RoleManage(object):
         as well as users not found on the central server.
         """
         output = "Added users: {}".format(str(usr_list[0]))
-        output = output + "\n\nUnmatched Users: %s".format(str(usr_list[1]))
+        output = output + "\n\nUnmatched Users: {}".format(str(usr_list[1]))
         with self.central_con.cursor() as cursor:
             cursor.execute(
                 "insert into log_action (client, host, content) values (%s, %s, %s)",
@@ -168,6 +168,21 @@ class RoleManage(object):
             if new_user:
                 user_stmt = "grant usage on *.* to %s"
                 cursor.execute(user_stmt, (name))
+            # Ensure authentication is most recent
+            with self.central_con.cursor() as cursor2:
+                # get plugin
+                plugin_stmt = "select Plugin from user where\
+                UserName=%s;"
+                cursor2.execute(plugin_stmt, (name))
+                plugin = cursor2.fetchone()
+                # get auth string
+                astr_stmt = "select Authentication_String \
+                from user where UserName=%s;"
+                cursor2.execute(astr_stmt, (name))
+                authstr = cursor2.fetchone()
+                # update the user on the client
+            auth_stmt = "set password for %s = %s".format(name, authstr)
+            cursor.execute(auth_stmt, (name[0], authstr[0]))
             # May need to check if user exists, even though it should.
             perm_vals = [x == "Y" for x in self.get_privs(name, schema)]
             perm_cols = self.permission_order
@@ -293,7 +308,7 @@ class RoleManage(object):
             Name in (%s)"
             cursor.execute(perm_query,
                            (",".join([b[0] for b in permissiontypes])))
-            permissions = list(cursor.fetchall()[0])
+            permissions = list(cursor.fetchone())
             return permissions
 
     def schema_privs(self, user):
