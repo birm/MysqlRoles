@@ -36,6 +36,6 @@ $(window).resize(function(){
         $("li.nav-item-0 a").text("Top");
     }
     else {
-        $("li.nav-item-0 a").text("MysqlRoles 0.3.3 documentation");
+        $("li.nav-item-0 a").text("MysqlRoles 1.0.0 documentation");
     }
 });

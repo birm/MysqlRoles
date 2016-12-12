@@ -68,7 +68,7 @@ I've created a basic playbook to use MysqlRoles::
       - name: ensure a stable MysqlRoles is installed
        pip:
           name: MysqlRoles
-          version: 0.3.3
+          version: 1.0.0
 
       - name: initalize the central db
         command: python -m MysqlRoles init inventory_hostname_short
@@ -80,7 +80,7 @@ I've created a basic playbook to use MysqlRoles::
       - name: ensure a stable MysqlRoles is installed
         pip:
            name: MysqlRoles
-           version: 0.3.3
+           version: 1.0.0
 
       - name: run the update
         command: python -m MysqlRoles update arg1 inventory_hostname_short
@@ -97,7 +97,7 @@ An example of a chef cookbook which would implement this is::
 
     easy_install_package 'MysqlRoles' do
       action :install
-      version :0.3.3
+      version :1.0.0
     end
 
     # only on your central host
