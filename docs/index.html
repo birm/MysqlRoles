@@ -1,0 +1,426 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to MysqlRoles’s documentation! &#8212; MysqlRoles 0.3.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">MysqlRoles 0.3.3 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to MysqlRoles&#8217;s documentation!</a></li>
+<li><a class="reference internal" href="#run-from-command-line">Run from Command line</a><ul>
+<li><a class="reference internal" href="#initialize-central-database">Initialize Central Database</a></li>
+<li><a class="reference internal" href="#id1">Initialize Central Database</a></li>
+<li><a class="reference internal" href="#seed-central-database">Seed Central Database</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mysqlroles-package">MysqlRoles package</a><ul>
+<li><a class="reference internal" href="#module-MysqlRoles.RoleManage">MysqlRoles.RoleManage module</a></li>
+<li><a class="reference internal" href="#module-MysqlRoles.RoleServ">MysqlRoles.RoleServ module</a></li>
+<li><a class="reference internal" href="#module-MysqlRoles.Run">MysqlRoles.Run module</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-mysqlroles-s-documentation">
+<h1>Welcome to MysqlRoles&#8217;s documentation!<a class="headerlink" href="#welcome-to-mysqlroles-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="run-from-command-line">
+<h1>Run from Command line<a class="headerlink" href="#run-from-command-line" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="initialize-central-database">
+<h2>Initialize Central Database<a class="headerlink" href="#initialize-central-database" title="Permalink to this headline">¶</a></h2>
+<p>Use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MysqlRoles</span> <span class="n">init</span> <span class="n">rbac</span>
+</pre></div>
+</div>
+<p>to initialize a server named rbac to use MysqlRoles.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The argument is optional, and defaults to 127.0.0.1</p>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>Initialize Central Database<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MysqlRoles</span> <span class="n">update</span> <span class="n">rbac</span> <span class="n">db</span><span class="o">-</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>to update a server named db-1 to match the central server named rbac.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The second argument is optional, and defaults to 127.0.0.1</p>
+</div>
+</div>
+<div class="section" id="seed-central-database">
+<h2>Seed Central Database<a class="headerlink" href="#seed-central-database" title="Permalink to this headline">¶</a></h2>
+<p>Use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">MysqlRoles</span> <span class="n">seed</span> <span class="n">rbac</span>
+</pre></div>
+</div>
+<p>to seed the sample values given into a host named rbac.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Do not use this command in any production environment.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The argument is optional, and defaults to 127.0.0.1</p>
+</div>
+</div>
+</div>
+<div class="section" id="mysqlroles-package">
+<h1>MysqlRoles package<a class="headerlink" href="#mysqlroles-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-MysqlRoles.RoleManage">
+<span id="mysqlroles-rolemanage-module"></span><h2>MysqlRoles.RoleManage module<a class="headerlink" href="#module-MysqlRoles.RoleManage" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="MysqlRoles.RoleManage.RoleManage">
+<em class="property">class </em><code class="descclassname">MysqlRoles.RoleManage.</code><code class="descname">RoleManage</code><span class="sig-paren">(</span><em>server</em>, <em>client='127.0.0.1'</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleManage.RoleManage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>RolePush.</p>
+<blockquote>
+<div><p>Functions to, from a source of truth, check a DB and make
+the mysql user table match.
+This class should only manage the client.</p>
+<dl class="docutils">
+<dt>Input:</dt>
+<dd>client: Address of server to make match the source of truth
+server: Address of source of Truth server (default: 127.0.0.1)</dd>
+</dl>
+</div></blockquote>
+<dl class="method">
+<dt id="MysqlRoles.RoleManage.RoleManage.get_privs">
+<code class="descname">get_privs</code><span class="sig-paren">(</span><em>user</em>, <em>schema=''</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleManage.RoleManage.get_privs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the privs of the user on the specified host.</p>
+<p>Returns a list of &#8220;Y&#8221; or &#8220;N&#8221; for each permission.
+Should return an empty list if no results.
+Does not manage schema-specific permissions.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleManage.RoleManage.get_schemas">
+<code class="descname">get_schemas</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleManage.RoleManage.get_schemas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of schemas that a particular user has special access for.</p>
+<p>Returns a list of these schemas.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleManage.RoleManage.get_users">
+<code class="descname">get_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleManage.RoleManage.get_users" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of users managed by this service.</p>
+<p>Returns a list of usernames managed by the service.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="MysqlRoles.RoleManage.RoleManage.permission_order">
+<code class="descname">permission_order</code><em class="property"> = ['Select', 'Insert', 'Update', 'Delete', 'Create', 'Drop', 'Reload', 'Shutdown', 'Process', 'File', 'Grant Option', 'References', 'Index', 'Alter', 'Super', 'CREATE TEMPORARY TABLES', 'Lock tables', 'Execute', 'Replication slave', 'Replication client', 'Create view', 'Show view', 'Create routine', 'Alter routine', 'Create user', 'Event', 'Trigger', 'Create tablespace']</em><a class="headerlink" href="#MysqlRoles.RoleManage.RoleManage.permission_order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleManage.RoleManage.remove_user">
+<code class="descname">remove_user</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleManage.RoleManage.remove_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a user from a database.</p>
+<p>Returns nothing.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="MysqlRoles.RoleManage.RoleManage.sanitize">
+<em class="property">static </em><code class="descname">sanitize</code><span class="sig-paren">(</span><em>input</em>, <em>allowable_list=[]</em>, <em>default=&quot;''&quot;</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleManage.RoleManage.sanitize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sanitize inputs to avoid issues with pymysql.</p>
+<p>Takes in an input to sanitize.
+Optionally takes in an list of allowable values and a default.
+The default is returned if the input is not in the list.
+Returns a sanizized result.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleManage.RoleManage.schema_privs">
+<code class="descname">schema_privs</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleManage.RoleManage.schema_privs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set schema-level permissions for users.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleManage.RoleManage.update_users">
+<code class="descname">update_users</code><span class="sig-paren">(</span><em>remove=False</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleManage.RoleManage.update_users" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the user inserts to add to the client, and add them.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleManage.RoleManage.user_change">
+<code class="descname">user_change</code><span class="sig-paren">(</span><em>name</em>, <em>new_user=False</em>, <em>schema=''</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleManage.RoleManage.user_change" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and/or updates a user.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleManage.RoleManage.user_check">
+<code class="descname">user_check</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleManage.RoleManage.user_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a check against the host for consistency.</p>
+<p>Reports a list of differences.
+The first element of the list is
+a list of users on the server but not client.
+The second slement of the list is
+a list of users on the client but not the server.
+The third element of the list is
+a list of users present on both the server and the client.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-MysqlRoles.RoleServ">
+<span id="mysqlroles-roleserv-module"></span><h2>MysqlRoles.RoleServ module<a class="headerlink" href="#module-MysqlRoles.RoleServ" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="MysqlRoles.RoleServ.RoleServ">
+<em class="property">class </em><code class="descclassname">MysqlRoles.RoleServ.</code><code class="descname">RoleServ</code><span class="sig-paren">(</span><em>server='127.0.0.1'</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleServ.RoleServ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="docutils">
+<dt>RoleServ: Server tools for MysqlRoles.</dt>
+<dd><p class="first">Functions for intializing the mysql source of truth server
+and functions associated with using it.
+This class should only manage the server.</p>
+<dl class="last docutils">
+<dt>Input:</dt>
+<dd>serv: Address of source of Truth server (default: 127.0.0.1)</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="MysqlRoles.RoleServ.RoleServ.add_access">
+<code class="descname">add_access</code><span class="sig-paren">(</span><em>name</em>, <em>usergroup</em>, <em>hostgroup</em>, <em>permission</em>, <em>schema=''</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleServ.RoleServ.add_access" title="Permalink to this definition">¶</a></dt>
+<dd><p>Give a user group access to a host group.</p>
+<p>Supports schema-level access, which defaults to empty.
+Empty Schema parameter means all schemas.
+Nonempty schema is treated like &#8220;grant (privs) on (schema) to (user)&#8221;</p>
+<p>Raises a RuntimeError if the the access grant exists by name.
+Raises a RuntimeError if the user access grant would be duplicated.
+Raises a ValueError if the host group does not exist.
+Raises a ValueError if the user group does not exist.
+Raises a ValueError if the permission type does not exist.
+Returns nothing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleServ.RoleServ.add_host">
+<code class="descname">add_host</code><span class="sig-paren">(</span><em>address</em>, <em>name=''</em>, <em>comments=''</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleServ.RoleServ.add_host" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a host to the server if it does not yet exist.</p>
+<p>Raises a RuntimeError if the host already exists.
+Returns nothing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleServ.RoleServ.add_host_group">
+<code class="descname">add_host_group</code><span class="sig-paren">(</span><em>name</em>, <em>description=''</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleServ.RoleServ.add_host_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a host group to the server if it does not yet exist.</p>
+<p>Raises a RuntimeError if the host group already exists.
+Returns nothing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleServ.RoleServ.add_host_group_membership">
+<code class="descname">add_host_group_membership</code><span class="sig-paren">(</span><em>hostname</em>, <em>groupname</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleServ.RoleServ.add_host_group_membership" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a host to a host group.</p>
+<p>Raises a RuntimeError if the host is already a member of the group.
+Raises a ValueError if the host does not exist.
+Raises a ValueError if the group does not exist.
+Returns nothing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleServ.RoleServ.add_permission">
+<code class="descname">add_permission</code><span class="sig-paren">(</span><em>name</em>, <em>grant</em>, <em>value='Y'</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleServ.RoleServ.add_permission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a permission to a named permission group.
+Takes in the name of the permission to modify, which grant to perform.
+Optionally takes in a value, so that it can be used to revoke.
+grant should be a permission column name for user.
+Run for each permission desired to change</p>
+<p>Raises a ValueError if the permission type does not exist.
+Does not check for duplicates.
+Returns nothing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleServ.RoleServ.add_user">
+<code class="descname">add_user</code><span class="sig-paren">(</span><em>name</em>, <em>fromhost='%'</em>, <em>plugin='mysql_native_password'</em>, <em>auth_str='*7ACE763ED393514FE0C162B93996ECD195FFC4F5'</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleServ.RoleServ.add_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a user to the server if it does not yet exist.</p>
+<p>Raises a RuntimeError if the user already exists.
+Returns nothing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleServ.RoleServ.add_user_group">
+<code class="descname">add_user_group</code><span class="sig-paren">(</span><em>name</em>, <em>description=''</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleServ.RoleServ.add_user_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a user group to the server if it does not yet exist.</p>
+<p>Raises a RuntimeError if the user group already exists.
+Returns nothing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleServ.RoleServ.add_user_group_membership">
+<code class="descname">add_user_group_membership</code><span class="sig-paren">(</span><em>username</em>, <em>groupname</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleServ.RoleServ.add_user_group_membership" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a user to a user group.</p>
+<p>Raises a RuntimeError if the user is already a member of the group.
+Raises a ValueError if the user does not exist.
+Raises a ValueError if the group does not exist.
+Returns nothing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleServ.RoleServ.create_permission">
+<code class="descname">create_permission</code><span class="sig-paren">(</span><em>name</em>, <em>allgrant=False</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleServ.RoleServ.create_permission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a permission type if it does not exist yet.</p>
+<p>Raises a RuntimeError if the permission already exists
+Does not check for duplicates.
+Returns nothing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleServ.RoleServ.create_tables">
+<code class="descname">create_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleServ.RoleServ.create_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create tables using the table_create.sql file in the create folder.</p>
+<p>Returns nothing.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="MysqlRoles.RoleServ.RoleServ.sanitize">
+<em class="property">static </em><code class="descname">sanitize</code><span class="sig-paren">(</span><em>input</em>, <em>allowable_list=[]</em>, <em>default=&quot;''&quot;</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleServ.RoleServ.sanitize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sanitize inputs to avoid issues with pymysql.</p>
+<p>Takes in an input to sanitize.
+Optionally takes in an list of allowable values and a default.
+The default is returned if the input is not in the list.
+Returns a sanizized result.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleServ.RoleServ.test_seed_tables">
+<code class="descname">test_seed_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleServ.RoleServ.test_seed_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Seed table for testing, using the seed.sql file in the create folder.</p>
+<p>Returns nothing.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-MysqlRoles.Run">
+<span id="mysqlroles-run-module"></span><h2>MysqlRoles.Run module<a class="headerlink" href="#module-MysqlRoles.Run" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="MysqlRoles.Run.Run">
+<em class="property">class </em><code class="descclassname">MysqlRoles.Run.</code><code class="descname">Run</code><a class="headerlink" href="#MysqlRoles.Run.Run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="staticmethod">
+<dt id="MysqlRoles.Run.Run.net_test">
+<em class="property">static </em><code class="descname">net_test</code><span class="sig-paren">(</span><em>host</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.Run.Run.net_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine if a host is accessible before doing anything.</p>
+<p>Returns the host name back if the host is up and is able to connect with mysql.
+To fix this issue, try:
+- Update your my.cnf with credentials
+- Start a mysql instance on the host</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="MysqlRoles.Run.Run.parse">
+<em class="property">static </em><code class="descname">parse</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.Run.Run.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse arguments given to CLI into commands to run.</p>
+</dd></dl>
+
+</dd></dl>
+
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">MysqlRoles 0.3.3 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Ryan Birmingham.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.
+    </div>
+  </body>
+</html>
