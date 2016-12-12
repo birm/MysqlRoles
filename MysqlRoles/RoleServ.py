@@ -60,9 +60,8 @@ class RoleServ(object):
         """
         with self.connection.cursor() as cursor:
             # allow for relative paths
-            create_file = os.path.join(
-                os.path.dirname(os.path.dirname(__file__)),
-                'create/table_create.sql')
+            create_file = os.path.join(os.path.dirname(__file__),
+                                       'create/table_create.sql')
             create_stmt = open(create_file, 'r').read()
             cursor.execute(create_stmt)
 
@@ -74,8 +73,8 @@ class RoleServ(object):
         """
         # TODO check if tables exist first
         with self.connection.cursor() as cursor:
-            seed_file = os.path.join(
-                os.path.dirname(os.path.dirname(__file__)), 'create/seed.sql')
+            seed_file = os.path.join(os.path.dirname(__file__),
+                                     'create/seed.sql')
             seed_table_stmt = open(seed_file, 'r').read()
             cursor.execute(seed_table_stmt)
 
