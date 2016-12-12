@@ -1,6 +1,4 @@
 include setup.py
 include LICENSE
 include README.md
-include MysqlRoles/create/seed.sql
-include MysqlRoles/create/table_create.sql
-include MysqlRoles/create/SeedDesc.md
+recursive-include create *
