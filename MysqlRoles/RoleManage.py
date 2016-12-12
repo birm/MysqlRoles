@@ -146,7 +146,7 @@ class RoleManage(object):
         with self.central_con.cursor() as cursor:
             cursor.execute(
                 "insert into log_action (client, host, content) values (%s, %s, %s)",
-                (self.client, self.host, output))
+                (self.client, self.server, output))
 
     def user_change(self, name, new_user=False, schema=""):
         """
