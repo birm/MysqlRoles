@@ -180,9 +180,9 @@ class RoleManage(object):
                 from user where UserName=%s;"
                 cursor.execute(astr_stmt, (name))
                 authstr = cursor.fetchone()
-            # update the user on the client
-            auth_stmt = "alter user if exists %s identified with %s by %s"
-            cursor.execute(auth_stmt, (name, plugin, authstr))
+                # update the user on the client
+                auth_stmt = "alter user if exists %s identified with %s by %s"
+                cursor.execute(auth_stmt, (name, plugin, authstr))
             # May need to check if user exists, even though it should.
             perm_vals = [x == "Y" for x in self.get_privs(name, schema)]
             perm_cols = self.permission_order
