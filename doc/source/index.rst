@@ -9,6 +9,9 @@ Welcome to MysqlRoles's documentation!
 Run from Command line
 =====================
 
+.. note::
+   command line tools expect ~/.my.cnf to exist and have access to any host you wish to update
+
 Initialize Central Database
 ---------------------------
 
