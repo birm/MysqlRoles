@@ -1,6 +1,13 @@
 create schema if not exists _MysqlRoles;
 use _MysqlRoles;
 
+create table if not exists log_action (
+  `client` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `host` char(60)COLLATE utf8_bin NOT NULL DEFAULT '',
+  `time` timestamp default CURRENT_TIMESTAMP,
+  `content` LONGTEXT,
+  PRIMARY KEY (`time`));
+
 CREATE TABLE IF NOT EXISTS user (
   `FromHost` char(60) COLLATE utf8_bin NOT NULL DEFAULT '',
   `UserName` char(16) COLLATE utf8_bin NOT NULL DEFAULT '',
