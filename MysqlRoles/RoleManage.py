@@ -145,8 +145,8 @@ class RoleManage(object):
         output = output + "\n\nUnmatched Users: %s".format(str(usr_list[1]))
         with self.central_con.cursor() as cursor:
             cursor.execute(
-                "insert into log_action (client, host, content) values (%s, %s)",
-                (self.client, output))
+                "insert into log_action (client, host, content) values (%s, %s, %s)",
+                (self.client, self.host, output))
 
     def user_change(self, name, new_user=False, schema=""):
         """
