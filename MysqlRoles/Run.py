@@ -1,7 +1,7 @@
 from MysqlRoles import RoleManage
 from MysqlRoles import RoleServ
 import pymysql
-
+import os
 
 class Run(object):
 
@@ -58,7 +58,7 @@ class Run(object):
                 return 1
             else:
                 cent = Run.net_test(args[1])
-                if len(args)==1:
+                if len(args)==2:
                     client = Run.net_test("localhost")
                 else:
                     client = Run.net_test(args[2])
@@ -80,8 +80,9 @@ class Run(object):
         - Update your my.cnf with credentials
         - Start a mysql instance on the host
         """
+        cnf_file = os.path.expanduser('~/.my.cnf')
         try:
-            pymysql.connect(host=host, db='mysql')
+            pymysql.connect(host=host, db='mysql', read_default_file=cnf_file)
             return host
         except pymysql.err.OperationalError:
             return False

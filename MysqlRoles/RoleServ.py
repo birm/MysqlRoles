@@ -202,12 +202,15 @@ class RoleServ(object):
         No special input validation.
         """
         self.server = server
+        cnf_file = os.path.expanduser('~/.my.cnf')
         tmp_connection = pymysql.connect(host=self.server,
-                                          autocommit=True)
+                                         autocommit=True,
+                                         read_default_file=cnf_file)
         tmp_connection.cursor().execute("create schema if not exists _MysqlRoles;")
         self.connection = pymysql.connect(host=self.server,
                                           db='_MysqlRoles',
-                                          autocommit=True)
+                                          autocommit=True,
+                                          read_default_file=cnf_file)
 
     def __exit__(self, exc_type, exc_value, traceback):
         """
