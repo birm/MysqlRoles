@@ -61,26 +61,56 @@ I've created a basic playbook to use MysqlRoles::
 
     # run_updates_msr.yml
     ---
-    - hosts: rbac_db_servers
+    - hosts: rbac_central
       sudo: yes
 
       tasks:
-      -name: ensure a stable MysqlRoles is installed
+      - name: ensure a stable MysqlRoles is installed
        pip:
           name: MysqlRoles
           version: 0.3.3
 
-      -name: run the update
-       command: python -m MysqlRoles update arg1 arg2
-          args:
-              central: sys-p1
-              manage: localhost
+      - name: initalize the central db
+        command: python -m MysqlRoles init inventory_hostname_short
+
+    - hosts: rbac_db_servers
+      sudo: yes
+
+      tasks:
+      - name: ensure a stable MysqlRoles is installed
+        pip:
+           name: MysqlRoles
+           version: 0.3.3
+
+      - name: run the update
+        command: python -m MysqlRoles update arg1 inventory_hostname_short
+           args:
+               central: sys-p1
 
 This file is located at usage_helpers/run_updates_msr.yml
 
 Chef
 ----
-Coming Soon
+An example of a chef cookbook which would implement this is::
+
+    centralhost = "rbac"
+
+    easy_install_package 'MysqlRoles' do
+      action :install
+      version :0.3.3
+    end
+
+    # only on your central host
+    execute 'run_init' do
+        command "python -m MysqlRoles init #{centralhost}"
+    end
+
+    # on every host you want to manage
+    execute 'run_updates' do
+        command "python -m MysqlRoles update #{centralhost} node['hostname']"
+    end
+
+This file is located at usage_helpers/run_updates_msr.rb
 
 Web UI
 ------

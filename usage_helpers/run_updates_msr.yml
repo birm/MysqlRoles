@@ -1,16 +1,27 @@
 # run_updates_msr.yml
 ---
-- hosts: rbac_db_servers
+- hosts: rbac_central
   sudo: yes
 
   tasks:
-  -name: ensure a stable MysqlRoles is installed
+  - name: ensure a stable MysqlRoles is installed
    pip:
       name: MysqlRoles
       version: 0.3.3
 
-  -name: run the update
-   command: python -m MysqlRoles update arg1 arg2
-      args:
-          central: sys-p1
-          manage: localhost
+  - name: initalize the central db
+    command: python -m MysqlRoles init inventory_hostname_short
+
+- hosts: rbac_db_servers
+  sudo: yes
+
+  tasks:
+  - name: ensure a stable MysqlRoles is installed
+    pip:
+       name: MysqlRoles
+       version: 0.3.3
+
+  - name: run the update
+    command: python -m MysqlRoles update arg1 inventory_hostname_short
+       args:
+           central: sys-p1
