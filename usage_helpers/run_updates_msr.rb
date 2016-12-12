@@ -2,7 +2,7 @@ centralhost = "rbac"
 
 easy_install_package 'MysqlRoles' do
   action :install
-  version :0.3.3
+  version :1.0.0
 end
 
 # only on your central host

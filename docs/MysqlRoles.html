@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>MysqlRoles package &#8212; MysqlRoles 0.3.3 documentation</title>
+    <title>MysqlRoles package &#8212; MysqlRoles 1.0.0 documentation</title>
     
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3.3',
+        VERSION:     '1.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">MysqlRoles 0.3.3 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">MysqlRoles 1.0.0 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -96,7 +96,7 @@
 <dt id="MysqlRoles.RoleManage.RoleManage">
 <em class="property">class </em><code class="descclassname">MysqlRoles.RoleManage.</code><code class="descname">RoleManage</code><span class="sig-paren">(</span><em>server</em>, <em>client='127.0.0.1'</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleManage.RoleManage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>RolePush.</p>
+<p>RoleManage.</p>
 <blockquote>
 <div><p>Functions to, from a source of truth, check a DB and make
 the mysql user table match.
@@ -140,6 +140,14 @@ Does not manage schema-specific permissions.</p>
 <code class="descname">remove_user</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleManage.RoleManage.remove_user" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a user from a database.</p>
 <p>Returns nothing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleManage.RoleManage.report_user_diff">
+<code class="descname">report_user_diff</code><span class="sig-paren">(</span><em>usr_list</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleManage.RoleManage.report_user_diff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reports the client&#8217;s user status.</p>
+<p>Reports users added to che client,
+as well as users not found on the central server.</p>
 </dd></dl>
 
 <dl class="staticmethod">
@@ -480,7 +488,7 @@ Returns a sanizized result.</p>
 <dt id="MysqlRoles.RoleManage">
 <em class="property">class </em><code class="descclassname">MysqlRoles.</code><code class="descname">RoleManage</code><span class="sig-paren">(</span><em>server</em>, <em>client='127.0.0.1'</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleManage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>RolePush.</p>
+<p>RoleManage.</p>
 <blockquote>
 <div><p>Functions to, from a source of truth, check a DB and make
 the mysql user table match.
@@ -524,6 +532,14 @@ Does not manage schema-specific permissions.</p>
 <code class="descname">remove_user</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleManage.remove_user" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a user from a database.</p>
 <p>Returns nothing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MysqlRoles.RoleManage.report_user_diff">
+<code class="descname">report_user_diff</code><span class="sig-paren">(</span><em>usr_list</em><span class="sig-paren">)</span><a class="headerlink" href="#MysqlRoles.RoleManage.report_user_diff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reports the client&#8217;s user status.</p>
+<p>Reports users added to che client,
+as well as users not found on the central server.</p>
 </dd></dl>
 
 <dl class="staticmethod">
@@ -609,7 +625,7 @@ To fix this issue, try:
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">MysqlRoles 0.3.3 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">MysqlRoles 1.0.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

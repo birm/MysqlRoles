@@ -1,12 +1,12 @@
 from distutils.core import setup
 
 setup(name='MysqlRoles',
-      version='0.3.3',
+      version='1.0.0',
       description='Role Based Access Control (RBAC) for mysql',
       author='Ryan Birmingham',
       author_email='birm@rbirm.us',
       url='http://rbirm.us',
-      classifiers=['Development Status :: 3 - Alpha',
+      classifiers=['Development Status :: 5 - Production/Stable',
                    'Programming Language :: Python :: 3.3',
                    'Topic :: Database',
                    'Intended Audience :: Information Technology',

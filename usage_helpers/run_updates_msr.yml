@@ -7,7 +7,7 @@
   - name: ensure a stable MysqlRoles is installed
    pip:
       name: MysqlRoles
-      version: 0.3.3
+      version: 1.0.0
 
   - name: initalize the central db
     command: python -m MysqlRoles init inventory_hostname_short
@@ -19,9 +19,9 @@
   - name: ensure a stable MysqlRoles is installed
     pip:
        name: MysqlRoles
-       version: 0.3.3
+       version: 1.0.0
 
   - name: run the update
     command: python -m MysqlRoles update arg1 inventory_hostname_short
        args:
-           central: sys-p1
+           central: rbac
