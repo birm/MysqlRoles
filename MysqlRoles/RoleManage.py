@@ -131,7 +131,22 @@ class RoleManage(object):
                               set(should_users))
         okay_user = list(set(there_users)
                          .intersection(should_users))
+        self.report_user_diff([missing_client, missing_server, okay_user])
         return [missing_client, missing_server, okay_user]
+
+    def report_user_diff(self, usr_list):
+        """
+        Reports the client's user status.
+
+        Reports users added to che client,
+        as well as users not found on the central server.
+        """
+        output = "Added users: {}".format(str(usr_list[0]))
+        output = output + "\n\nUnmatched Users: %s".format(str(usr_list[1]))
+        with self.central_con.cursor() as cursor:
+            cursor.execute(
+                "insert into log_action (client, host, content) values (%s, %s)",
+                (self.client, output))
 
     def user_change(self, name, new_user=False, schema=""):
         """
