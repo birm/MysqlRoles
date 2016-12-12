@@ -1,6 +1,4 @@
 include setup.py
 include LICENSE
 include README.md
-include create/seed.sql
-include create/table_create.sql
-include create/SeedDesc.md
+recursive-include create *
