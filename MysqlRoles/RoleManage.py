@@ -172,12 +172,12 @@ class RoleManage(object):
             with self.central_con.cursor() as cursor:
                 # get plugin
                 plugin_stmt = "select Plugin from user where\
-                name=%s;"
+                UserName=%s;"
                 cursor.execute(plugin_stmt, (name))
                 plugin = cursor.fetchone()
                 # get auth string
                 astr_stmt = "select Authentication_String \
-                from user where name=%s;"
+                from user where UserName=%s;"
                 cursor.execute(astr_stmt, (name))
                 authstr = cursor.fetchone()
             # update the user on the client
