@@ -182,18 +182,18 @@ class RoleManage(object):
                 authstr = cursor2.fetchone()
                 # update the user on the client
             auth_stmt = "set password for %s = %s".format(name, authstr)
-            cursor.execute(auth_stmt, (name[0], authstr[0]))
+            cursor.execute(auth_stmt, (name, authstr[0]))
             # May need to check if user exists, even though it should.
             perm_vals = [x == "Y" for x in self.get_privs(name, schema)]
             perm_cols = self.permission_order
             for perm, col in zip(perm_vals, perm_cols):
                 if perm:
                     cursor.execute("grant " + col + " on " + token + " to %s",
-                                   (name[0]))
+                                   (name))
                 else:
                     cursor.execute("revoke " + col + " on " + token +
                                    " from %s",
-                                   (name[0]))
+                                   (name))
 
     def remove_user(self, name):
         """
