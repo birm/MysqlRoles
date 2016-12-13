@@ -119,7 +119,7 @@ class RoleManage(object):
             user_group_membership as ug on u.UserName=ug.UserName \
             join access a on a.UserGroup=ug.GroupName inner join \
             host_group_membership as hg on \
-            hg.HostName=a.HostGroup join host h on h.Name=hg.HostName \
+            hg.GroupName=a.HostGroup join host h on h.Name=hg.HostName \
             where hg.HostName=%s or h.Address=%s"
             cursor.execute(should_query, (self.client, self.client_ip))
             should_users = list(cursor.fetchall())
