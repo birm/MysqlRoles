@@ -186,9 +186,6 @@ class RoleManage(object):
             # May need to check if user exists, even though it should.
             perm_vals = [x == "Y" for x in self.get_privs(name, schema)]
             perm_cols = self.permission_order
-            cursor.execute("revoke all on " + token +
-                           " from %s",
-                           (name[0]))
             for perm, col in zip(perm_vals, perm_cols):
                 if perm:
                     cursor.execute("grant " + col + " on " + token + " to %s",
@@ -326,7 +323,7 @@ class RoleManage(object):
         # for each disinct schema touched
         for schema in self.get_schemas(user):
             # set permissions
-            self.user_change(user, False, schema)
+            self.user_change(user, True, schema)
 
     def update_users(self, remove=False):
         """
@@ -339,7 +336,7 @@ class RoleManage(object):
             self.schema_privs(add_usr)
         for update_usr in users[2]:
             # update permissions
-            self.user_change(update_usr, False)
+            self.user_change(update_usr, True)
             self.schema_privs(update_usr)
         if remove:
             # remove users on client but not server
