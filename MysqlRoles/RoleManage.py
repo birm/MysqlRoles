@@ -164,7 +164,7 @@ class RoleManage(object):
             if schema == "":
                 token = "*.*"
             else:
-                token = "{schema}.*".format(schema=schema)
+                token = "{schema}.*".format(schema=schema[0])
             if new_user:
                 user_stmt = "grant usage on *.* to %s"
                 cursor.execute(user_stmt, (name))
@@ -182,18 +182,17 @@ class RoleManage(object):
                 authstr = cursor2.fetchone()
                 # update the user on the client
             auth_stmt = "set password for %s = %s".format(name, authstr)
-            cursor.execute(auth_stmt, (name, authstr[0]))
+            cursor.execute(auth_stmt, (name[0], authstr[0]))
             # May need to check if user exists, even though it should.
             perm_vals = [x == "Y" for x in self.get_privs(name, schema)]
             perm_cols = self.permission_order
+            cursor.execute("revoke all on " + token +
+                           " from %s",
+                           (name[0]))
             for perm, col in zip(perm_vals, perm_cols):
                 if perm:
                     cursor.execute("grant " + col + " on " + token + " to %s",
-                                   (name))
-                else:
-                    cursor.execute("revoke " + col + " on " + token +
-                                   " from %s",
-                                   (name))
+                                   (name[0]))
 
     def remove_user(self, name):
         """
@@ -229,9 +228,10 @@ class RoleManage(object):
             ug_query = "select distinct(`Schema`) from \
             access where UserGroup in (%s) and \
             HostGroup in (%s) and `Schema`<>''"
-            cursor.execute(ug_query,
-                           (",".join([b[0] for b in usergroups]),
-                            ",".join([h[0] for h in hostgroups])))
+            ug12 = ug_query % (",".join(
+                ["'"+b[0]+"'" for b in usergroups]),
+                ",".join(["'"+b[0]+"'" for b in hostgroups]))
+            cursor.execute(ug12)
             return list(cursor.fetchall())
 
     def get_privs(self, user, schema=""):
@@ -261,17 +261,23 @@ class RoleManage(object):
             if schema == "":
                 ug_query = "select PermissionType from \
                 access where UserGroup in (%s) and \
-                HostGroup in (%s) and `Schema`='' or %s='impossible'"
+                HostGroup in (%s) and `Schema`=''"
+                ug12 = ug_query % (",".join(
+                    ["'" + b[0] + "'" for b in usergroups]),
+                    ",".join(["'" + b[0] + "'" for b in hostgroups]))
+                cursor.execute(ug12)
+                permissiontypes = list(cursor.fetchall())
             else:
                 ug_query = "select PermissionType from \
                 access where UserGroup in (%s) and \
                 HostGroup in (%s) and \
-                `Schema`=%s"
-            cursor.execute(ug_query,
-                           (",".join([b[0] for b in usergroups]),
-                            ",".join([b[0] for b in hostgroups]),
-                            schema))
-            permissiontypes = list(cursor.fetchall())
+                `Schema` = %s"
+                ug12 = ug_query % (",".join(
+                    ["'"+b[0]+"'" for b in usergroups]),
+                    ",".join(["'" + b[0] + "'" for b in hostgroups]),
+                    "'" + schema[0] + "'")
+                cursor.execute(ug12)
+                permissiontypes = list(cursor.fetchall())
             # logical or for each permission
             # return a list for each permission in order
             perm_query = "select \
@@ -306,8 +312,9 @@ class RoleManage(object):
             max(Create_tablespace_priv) \
             from permission_type where \
             Name in (%s)"
-            cursor.execute(perm_query,
-                           (",".join([b[0] for b in permissiontypes])))
+            cursor.execute(perm_query %
+                           (",".join(["'" + b[0] +
+                                      "'" for b in permissiontypes])))
             permissions = list(cursor.fetchone())
             return permissions
 
