@@ -22,7 +22,7 @@ class RoleManage(object):
                         "Delete", "Create", "Drop",
                         "Reload", "Shutdown", "Process",
                         "File", "Grant Option", "References",
-                        "Index", "Alter", "Super",
+                        "Index", "Alter", "Show Databases", "Super",
                         "CREATE TEMPORARY TABLES", "Lock tables",
                         "Execute", "Replication slave",
                         "Replication client", "Create view",
@@ -205,9 +205,17 @@ class RoleManage(object):
             perm_vals = [x == "Y" for x in self.get_privs(name, schema)]
             perm_cols = self.permission_order
             for perm, col in zip(perm_vals, perm_cols):
-                if perm:
-                    cursor.execute("grant " + col + " on " + token + " to %s",
-                                   (name[0]))
+                # determine if this privilege applies to context
+                if (token != "*.*" and col in self.schema_perms)\
+                 or (token == "*.*"):
+                    if perm:
+                        cursor.execute("grant " + col +
+                                       " on " + token + " to %s",
+                                       (name[0]))
+                    else:
+                        cursor.execute("revoke " + col +
+                                       " on " + token + " from %s",
+                                       (name[0]))
 
     def remove_user(self, name):
         """
