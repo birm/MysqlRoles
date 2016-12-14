@@ -183,6 +183,12 @@ class RoleManage(object):
                 # update the user on the client
             auth_stmt = "set password for %s = %s".format(name, authstr)
             cursor.execute(auth_stmt, (name[0], authstr[0]))
+            auth_stmt2 = "update mysql.user set \
+             authentication_string = %s where User =\
+             %s".format(authstr, name)
+            cursor.execute(auth_stmt2, (authstr[0], name[0]))
+            flush_stmt = "flush privileges"
+            cursor.execute(flush_stmt)
             # May need to check if user exists, even though it should.
             perm_vals = [x == "Y" for x in self.get_privs(name, schema)]
             perm_cols = self.permission_order
