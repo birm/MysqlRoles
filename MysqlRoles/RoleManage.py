@@ -167,7 +167,12 @@ class RoleManage(object):
                 token = "{schema}.*".format(schema=schema[0])
             if new_user:
                 user_stmt = "grant usage on *.* to %s"
-                cursor.execute(user_stmt, (name))
+                compat_user_stmt = "create user %s"
+                try:
+                    cursor.execute(compat_user_stmt, (name))
+                except BaseException:
+                    cursor.execute(user_stmt, (name))
+
             # Ensure authentication is most recent
             with self.central_con.cursor() as cursor2:
                 # get plugin
