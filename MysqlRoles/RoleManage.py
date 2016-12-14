@@ -30,6 +30,13 @@ class RoleManage(object):
                         "Alter routine", "Create user",
                         "Event", "Trigger", "Create tablespace"]
 
+    schema_perms = ["Select", "Insert", "Update", "Delete",
+                    "Create", "Drop", "Grant Option", "Index",
+                    "Alter", "CREATE TEMPORARY TABLES",
+                    "Lock tables", "Execute", "Create view",
+                    "Show view", "Create routine",
+                    "Alter routine", "Event", "Trigger"]
+
     @staticmethod
     def sanitize(input, allowable_list=[], default="''"):
         """
