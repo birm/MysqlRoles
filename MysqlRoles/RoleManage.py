@@ -22,13 +22,20 @@ class RoleManage(object):
                         "Delete", "Create", "Drop",
                         "Reload", "Shutdown", "Process",
                         "File", "Grant Option", "References",
-                        "Index", "Alter", "Super",
+                        "Index", "Alter", "Show Databases", "Super",
                         "CREATE TEMPORARY TABLES", "Lock tables",
                         "Execute", "Replication slave",
                         "Replication client", "Create view",
                         "Show view", "Create routine",
                         "Alter routine", "Create user",
                         "Event", "Trigger", "Create tablespace"]
+
+    schema_perms = ["Select", "Insert", "Update", "Delete",
+                    "Create", "Drop", "Grant Option", "Index",
+                    "Alter", "CREATE TEMPORARY TABLES",
+                    "Lock tables", "Execute", "Create view",
+                    "Show view", "Create routine",
+                    "Alter routine", "Event", "Trigger"]
 
     @staticmethod
     def sanitize(input, allowable_list=[], default="''"):
@@ -196,11 +203,24 @@ class RoleManage(object):
             cursor.execute(flush_stmt)
             # May need to check if user exists, even though it should.
             perm_vals = [x == "Y" for x in self.get_privs(name, schema)]
-            perm_cols = self.permission_order
-            for perm, col in zip(perm_vals, perm_cols):
-                if perm:
-                    cursor.execute("grant " + col + " on " + token + " to %s",
-                                   (name[0]))
+            # if all schema grants given
+            if sum(perm_vals) == 29:
+                cursor.execute("grant all"
+                               " on " + token + " to %s",
+                               (name[0]))
+            else:
+                for perm, col in zip(perm_vals, self.permission_order):
+                    # determine if this privilege applies to context
+                    if (token != "*.*" and col in self.schema_perms)\
+                     or (token == "*.*"):
+                        if perm:
+                            cursor.execute("grant " + col +
+                                           " on " + token + " to %s",
+                                           (name[0]))
+                        else:
+                            cursor.execute("revoke " + col +
+                                           " on " + token + " from %s",
+                                           (name[0]))
 
     def remove_user(self, name):
         """
