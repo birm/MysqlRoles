@@ -205,8 +205,8 @@ class RoleManage(object):
             perm_vals = [x == "Y" for x in self.get_privs(name, schema)]
             # if all schema grants given
             if sum(perm_vals) == 29:
-                cursor.execute("grant all"
-                               " on " + token + " to %s",
+                cursor.execute("grant all on " +
+                               token + " to %s with grant option",
                                (name[0]))
             else:
                 for perm, col in zip(perm_vals, self.permission_order):
