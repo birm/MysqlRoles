@@ -204,9 +204,10 @@ class RoleManage(object):
             # May need to check if user exists, even though it should.
             perm_vals = [x == "Y" for x in self.get_privs(name, schema)]
             # if all schema grants given
+            print str(sum(perm_vals)) + " for " + name[0]
             if sum(perm_vals) == 29:
-                cursor.execute("grant all"
-                               " on " + token + " to %s",
+                print "grant all on " + token + " to %s with grant option" % (name[0])
+                cursor.execute("grant all on " + token + " to %s with grant option",
                                (name[0]))
             else:
                 for perm, col in zip(perm_vals, self.permission_order):
