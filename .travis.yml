@@ -27,3 +27,6 @@ script:
     # function tests
     - py.test MysqlRoles/tests/test_roleserv_fcns.py
     - py.test MysqlRoles/tests/test_rolemanage_fcns.py
+
+notifications:
+  slack: rbirm:fjJKXGPbjyXSGAKKaOU6GWEh
