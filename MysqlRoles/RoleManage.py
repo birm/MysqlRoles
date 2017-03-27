@@ -193,12 +193,8 @@ class RoleManage(object):
                 cursor2.execute(astr_stmt, (name))
                 authstr = cursor2.fetchone()
                 # update the user on the client
-            auth_stmt = "set password for %s = %s".format(name, authstr)
-            cursor.execute(auth_stmt, (name[0], authstr[0]))
-            auth_stmt2 = "update mysql.user set \
-             authentication_string = %s where User =\
-             %s".format(authstr, name)
-            cursor.execute(auth_stmt2, (authstr[0], name[0]))
+                auth_stmt = "alter user if exists %s identified with %s AS %s"
+                cursor.execute(auth_stmt, (name[0], authstr[0], plugin))    
             flush_stmt = "flush privileges"
             cursor.execute(flush_stmt)
             # May need to check if user exists, even though it should.
