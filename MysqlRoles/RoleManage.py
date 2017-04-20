@@ -166,23 +166,8 @@ class RoleManage(object):
         name = RoleManage.sanitize(name)
         schema = RoleManage.sanitize(schema)
         with self.client_con.cursor() as cursor:
-            # make token for grant statement
-            token = ""
-            if schema == "":
-                token = "*.*"
-            else:
-                token = "{schema}.*".format(schema=schema[0])
-            if new_user:
-                user_stmt = "grant usage on *.* to %s"
-                compat_user_stmt = "create user %s"
-                try:
-                    cursor.execute(compat_user_stmt, (name))
-                except BaseException:
-                    cursor.execute(user_stmt, (name))
-
-            # Ensure authentication is most recent
             with self.central_con.cursor() as cursor2:
-                # get plugin
+                # Ensure authentication is most recent
                 plugin_stmt = "select Plugin from user where\
                 UserName=%s;"
                 cursor2.execute(plugin_stmt, (name))
@@ -192,6 +177,21 @@ class RoleManage(object):
                 from user where UserName=%s;"
                 cursor2.execute(astr_stmt, (name))
                 authstr = cursor2.fetchone()
+                # handle new user case
+                # make token for grant statement
+                token = ""
+                if schema == "":
+                    token = "*.*"
+                else:
+                    token = "{schema}.*".format(schema=schema[0])
+                if new_user:
+                    user_stmt = "grant usage on *.* to %s"
+                    compat_user_stmt = "create user %s identified with %s as %s"
+                    try:
+                        cursor.execute(compat_user_stmt, (name, plugin, authstr))
+                    except BaseException:
+                        cursor.execute(user_stmt, (name))
+                
                 # update the user on the client
                 try:
                     auth_stmt = "alter user if exists %s identified with %s AS %s"
